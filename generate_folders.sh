@@ -1,0 +1,1 @@
+cat README.md | xargs -n1 mkdir subjects/
