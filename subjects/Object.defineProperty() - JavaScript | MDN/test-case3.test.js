@@ -43,7 +43,6 @@ describe('Object.defineProperty()', () => {
   });
 
   it('should enable re-assign on object of writable true', () => {
-    console.log(objectWritableAndConfigurable.property1 = 25);
     expect(() => objectWritableAndConfigurable.property1 = 25).not.toThrowError(TypeError);
   });
 
@@ -54,7 +53,6 @@ describe('Object.defineProperty()', () => {
       Object.defineProperty(Base.prototype, 'inheritedProperty', {
         get: () => aux,
         set(value) {
-          console.log(this);
           insideSet++;
           aux = value
         }

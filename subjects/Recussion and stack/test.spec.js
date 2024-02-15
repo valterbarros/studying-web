@@ -33,13 +33,13 @@ describe('Recussion and stack', () => {
 
   // https://en.wikipedia.org/wiki/Arithmetic_progression
   it('should sum numbers using Arithmetic progression', () => {
-    const arithmeticProgression = (n, step) => {
-      return n * (n + 1) / step
+    const arithmeticProgression = (n) => {
+      return n * (n + 1) / 2
     }
     
-    expect(arithmeticProgression(2, 2)).toBe(3);
-    expect(arithmeticProgression(4, 2)).toBe(10);
-    expect(arithmeticProgression(100, 2)).toBe(5050);
+    expect(arithmeticProgression(2)).toBe(3);
+    expect(arithmeticProgression(4)).toBe(10);
+    expect(arithmeticProgression(100)).toBe(5050);
   });
 
   it('should factorial number', () => {
@@ -53,28 +53,80 @@ describe('Recussion and stack', () => {
   });
 
   it('should fibonacci number', () => {
-    // const fibonacci = (n) => {
-    //   if (n === 5) return 1
-    //   if (n === 1) return fibonacci(1);
+    const fibonacciRecur = (n) => {
+      if (n <= 1) return n
 
-    //   return fibonacci(n - 2 + n - 1)
-    // }
+      return fibonacciRecur(n - 1) + fibonacciRecur(n - 2)
+    }
 
-    const fibonacci = (n) => {
+    const fibonacciLoop = (n) => {
       let total = 0;
-      const list = []
-      for (let index = 1; index <= n; index++) {
-        console.log(index, Math.max(index - 1 + index - 2, 1));
-        total += Math.max(index - 1 + index - 2, 1);
+      const list = [1, 1]
+      for (let index = 2; index < n; index++) {
+        total = list[index - 1] + list[index - 2];
         list.push(total)
-        // console.log(total);
       }
-
-      console.log(list);
 
       return total;
     }
 
-    expect(fibonacci(7)).toBe(13);
+    expect(fibonacciLoop(77)).toBe(5527939700884757);
+
+    // not otimized
+    // expect(fibonacciRecur(77)).toBe(5527939700884757);
+
+    expect(fibonacciRecur(7)).toBe(13);
+  });
+
+  it('should output single linked list', () => {
+    let list = {
+      value: 1,
+      next: {
+        value: 2,
+        next: {
+          value: 3,
+          next: {
+            value: 4,
+            next: null
+          }
+        }
+      }
+    };
+
+    const printListRecur = (list) => {
+      console.log(list.value);
+
+      if (list.next) {
+        printListRecur(list.next); // do the same for the rest of the list
+      }
+    }
+
+    printListRecur(list)
+  });
+
+  it('should output single linked list in reverse', () => {
+    let list = {
+      value: 1,
+      next: {
+        value: 2,
+        next: {
+          value: 3,
+          next: {
+            value: 4,
+            next: null
+          }
+        }
+      }
+    };
+
+    const printListReverseRecur = (list) => {
+      if (list.next) {
+        printListReverseRecur(list.next); // do the same for the rest of the list
+      }
+      
+      console.log(list.value);
+    }
+
+    printListReverseRecur(list)
   });
 });

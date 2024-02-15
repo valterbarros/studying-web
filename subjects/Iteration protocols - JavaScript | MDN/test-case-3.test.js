@@ -3,7 +3,6 @@ import { CustomIterableAndIterator, CustomIterator, iterable } from './index';
 
 describe('iterable', () => {
   it('should return value', () => {
-    console.log([...iterable]);
     expect([...iterable]).toEqual([1]);
   });
 });

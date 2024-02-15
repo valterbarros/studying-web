@@ -22,7 +22,6 @@ describe('setPrototypeOf', () => {
       }
 
       function SuperHero() {
-        console.log(this.name);
       }
 
       Object.setPrototypeOf(SuperHero.prototype, Human.prototype);
