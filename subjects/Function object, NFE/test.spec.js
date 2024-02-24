@@ -30,4 +30,32 @@ describe('Function object, NFE', () => {
 
     expect(outerName()).toBe('Hello Guest');
   });
+
+  it('should pass function methods inside function property', () => {
+    function makeCounter() {
+      let value = 0;
+
+      function counter() {
+        return ++value;
+      }
+
+      counter.set = (value) => {
+        return counter.value = value;
+      }
+
+      counter.decrease = (value) => {
+        return --counter.value
+      }
+
+      return counter;
+    }
+
+    const counter = makeCounter();
+
+    expect(counter()).toBe(1);
+    expect(counter()).toBe(2);
+    expect(counter()).toBe(3);
+    expect(counter.set(10)).toBe(10);
+    expect(counter.decrease()).toBe(9);
+  });
 });
