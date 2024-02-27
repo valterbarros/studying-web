@@ -3,6 +3,13 @@
 import { expect } from 'vitest'
 
 describe('Function object, NFE', () => {
+  beforeEach(() => {
+    vi.useFakeTimers()
+  })
+  afterEach(() => {
+    vi.restoreAllMocks()
+  })
+
   it('should to be possible to pass this context to a function', () => {
     function say() {
       return this.name
@@ -36,7 +43,6 @@ describe('Function object, NFE', () => {
 
   it('should .apply only accept array like as args', () => {
     function applying(...args) {
-      console.log(args);
       return args[0];
     }
 
@@ -45,7 +51,6 @@ describe('Function object, NFE', () => {
 
   it('should .call accept array like and iterables as args', () => {
     function applying(...args) {
-      console.log(args);
       return args[0];
     }
 
@@ -53,9 +58,40 @@ describe('Function object, NFE', () => {
   });
 
 
-  it('should be possible to borrow a array method on a array like', () => {
+  it('should be possible to borrow an array method with an array like', () => {
     const like = { length: 3, 0: 1, 1: 2, 2: 3 };
 
     expect([].join.apply(like)).toBe('1,2,3')
+  });
+
+  it('should debounce function using decorator', () => {
+    let params = [];
+
+    function f(x) {
+      params.push(x);
+      return x;
+    }
+    
+    function debounce(fn, time) {
+      let timeId;
+    
+      const wrapper = function(...args) {
+        clearTimeout(timeId);
+    
+        timeId = setTimeout(fn, time, ...args);
+      }
+    
+      return wrapper;
+    }
+    
+    const newF = debounce(f, 1000);
+    
+    newF("a");
+    setTimeout(() => newF("b"), 200);
+    setTimeout(() => newF("c"), 500);
+
+    vi.runAllTimers();
+
+    expect(params).toEqual(['c']);
   });
 });
