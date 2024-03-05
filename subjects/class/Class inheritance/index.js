@@ -1,4 +1,5 @@
-export function Base() {}
+export function Base() {
+}
 Base.prototype.value = () => 2
 export class Derivated extends Base {
   constructor() {

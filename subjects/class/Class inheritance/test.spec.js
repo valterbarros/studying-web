@@ -46,16 +46,29 @@ describe('Class inheritance', () => {
 
   it('should be possible to inherit static method and property', () => {
     class Base1 {
+      property = 'prop'
       static customName = 'base';
       static getName() {
         return this.customName;
       }
+
+      customName = 'base'
+      getName() {
+        console.log('this', this);
+        return this.customName
+      }
     }
 
-    class Derivated2 extends Base1 {}
-
+    class Derivated2 extends Base1 {
+      getInherited() {
+        return this.property
+      }
+    }
+    
     expect(Derivated2.customName).toEqual('base');
     expect(Derivated2.getName()).toEqual('base');
+    expect(new Derivated2().getInherited()).toEqual('prop');
+    expect(new Derivated2().getName()).toEqual('base');
   });
 
   it('should be possible to add a private property', () => {

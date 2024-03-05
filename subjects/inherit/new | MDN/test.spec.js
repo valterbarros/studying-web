@@ -1,6 +1,4 @@
-// import { expect, describe } from 'vitest'
-
-import { expect } from "../../node_modules/vitest/dist/index";
+import { expect } from "vitest";
 
 describe('Function object, NFE', () => {
   it('should new instance', () => {
