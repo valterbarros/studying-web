@@ -1,41 +1,34 @@
-// import { expect, describe } from 'vitest'
-
-import { expect } from "vitest";
+import { expect, beforeEach } from "vitest";
+import { buildClass } from "../index";
 
 describe('Class basic syntax', () => {
-  it('should class be function typeof', () => {
-    class Point {}
+  beforeEach(() => {
+    vi.resetModules();
+  })
 
-    expect(typeof Point).toBe('function');
+  it('should class be function typeof', () => {
+    const Derivated = buildClass();
+    expect(typeof Derivated).toBe('function');
   });
 
   it('should be possible create class without name', () => {
     expect(() => class {}).not.toThrowError();
   });
 
-  it('should class fields be not added to prototype', () => {
-    class Point {
-      x = 0
-    }
+  it('should class fields be not added to prototype', async () => {
+    const Derivated = buildClass();
 
-    Point.prototype.y = 10
+    Derivated.prototype.y = 10
 
-    expect(Point.prototype).not.toHaveProperty('x')
-    expect(Point.prototype).toHaveProperty('y')
+    expect(Derivated.prototype).not.toHaveProperty('customName')
+    expect(Derivated.prototype).toHaveProperty('y')
   });
 
   it('should not lost this when passed method as function', () => {
-    class Point {
-      x = 10
-      y = 20
-      sum = () => {
-        return this.x + this.y
-      }
-    }
+    const Derivated = buildClass();
+    const d = new Derivated();
+    const { autoBoundFunction } = d;
 
-    const point = new Point();
-    const { sum } = point;
-
-    expect(sum()).toEqual(30)
+    expect(autoBoundFunction()).toEqual(12)
   });
 });

@@ -1,89 +1,50 @@
 import { expect } from "vitest";
-import { Derivated } from ".";
+import { Base, BaseClass, DerivatedObj, buildClass } from "../index";
 
 describe('Class inheritance', () => {
   it('should inheritance accept function', () => {
+    const Derivated = buildClass(Base);
+
     expect(new Derivated()).toHaveProperty('value');
   });
 
   it('should be possible to call a parent method', () => {
+    const Derivated = buildClass(Base);
+
     expect(new Derivated().sum()).toEqual(2);
   });
 
   it('should be possible to use super inside literal objects', () => {
-    const Base = {
-      sum() {
-        return 1 + 1
-      }
-    }
-
-    const Derivated = {
-      __proto__: Base,
-      sum() {
-        return super.sum();
-      }
-    }
-
-    expect(Derivated.sum()).toEqual(2);
+    expect(DerivatedObj.sum()).toEqual(2);
   });
 
   it('should be possible to override a constructor', () => {
-    const Base = class {
+    class CustomDerivated extends Base {
       constructor() {
-        this.a = 1
-      }
-    }
-
-    class Derivated extends Base {
-      constructor() {
-        // super()
+        super(...arguments)
         this.z = 2
       }
     }
 
-    expect(() => new Derivated()).not.toThrowError();
+    expect(() => new CustomDerivated()).not.toThrowError();
   });
 
-  it('should be possible to inherit static method and property', () => {
-    class Base1 {
-      property = 'prop'
-      static customName = 'base';
-      static getName() {
-        return this.customName;
-      }
+  it('should be possible to inherit static method and property', async () => {
+    const DerivatedChanged = buildClass(BaseClass);
 
-      customName = 'base'
-      getName() {
-        console.log('this', this);
-        return this.customName
-      }
-    }
-
-    class Derivated2 extends Base1 {
-      getInherited() {
-        return this.property
-      }
-    }
-    
-    expect(Derivated2.customName).toEqual('base');
-    expect(Derivated2.getName()).toEqual('base');
-    expect(new Derivated2().getInherited()).toEqual('prop');
-    expect(new Derivated2().getName()).toEqual('base');
+    expect(DerivatedChanged.customName).toEqual('base');
+    expect(DerivatedChanged.getName()).toEqual('base');
+    expect(new DerivatedChanged().getInherited()).toEqual('prop');
+    expect(new DerivatedChanged().getName()).toEqual('base');
   });
 
   it('should be possible to add a private property', () => {
-    class PrivateProperty {
-      #priv = 12
+    const Derivated = buildClass(Base);
 
-      getPriv() {
-        return this.#priv
-      }
-    }
+    const d = new Derivated();
 
-    const priv = new PrivateProperty();
-
-    expect(PrivateProperty.prototype).not.toHaveProperty('#priv');
-    expect(PrivateProperty.prototype).not.toHaveProperty('priv');
-    expect(priv.getPriv()).toEqual(12);
+    expect(Derivated.prototype).not.toHaveProperty('#priv');
+    expect(Derivated.prototype).not.toHaveProperty('priv');
+    expect(d.getPriv()).toEqual(12);
   });
 });

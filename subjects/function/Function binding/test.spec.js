@@ -15,7 +15,6 @@ describe('Function object, NFE', () => {
 
   it('should ignore value based as this when using new', () => {
     function original () {
-      console.log('age', this.age)
       return {
         name: 'valter'
       }

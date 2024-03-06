@@ -38,7 +38,6 @@ describe('Function object, NFE', () => {
 
   it('should object constructed with Reflect.construct return newTarget as new.target', () => {
     function Point(x,y) {
-      console.log('Point')
       this.x = x;
       this.y = y;
     }
@@ -46,7 +45,6 @@ describe('Function object, NFE', () => {
     Point.prototype.sum = 5
     
     function newTarget(x, y) {
-      console.log('newTarget')
       this.z = 10
     }
     

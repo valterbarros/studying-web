@@ -94,8 +94,6 @@ describe('Recussion and stack', () => {
     };
 
     const printListRecur = (list) => {
-      console.log(list.value);
-
       if (list.next) {
         printListRecur(list.next); // do the same for the rest of the list
       }
@@ -123,8 +121,6 @@ describe('Recussion and stack', () => {
       if (list.next) {
         printListReverseRecur(list.next); // do the same for the rest of the list
       }
-      
-      console.log(list.value);
     }
 
     printListReverseRecur(list)
