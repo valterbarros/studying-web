@@ -4,17 +4,24 @@ main source: https://developer.mozilla.org/ and https://javascript.info/
 
 Subjects
 
-class:
+classes:
 
 - [this - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this#bound_methods_in_classes)
 - [Classes - javascript.info](https://javascript.info/classes)
+- [Method definitions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Method_definitions)
+- [getter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get)
+- [setter](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set)
+- [Public class fields](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes/Public_class_fields)
+- [this | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this)
 - [new - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/new)
 - [instanceof - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof)
 
-function:
+functions:
 
 - [Functions - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions)
 - [Function.prototype.bind() - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_objects/Function/bind)
+- [Function: prototype - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/prototype)
+- [Function.prototype[@@hasInstance]](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/@@hasInstance)
 - [Advanced working with functions javascript.info](https://javascript.info/advanced-functions)
   - [Recursion and stack](https://javascript.info/recursion)
   - [Rest parameters and spread syntax](https://javascript.info/rest-parameters-spread)
@@ -39,7 +46,7 @@ inherit
 - [Inheritance and the prototype chain - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Inheritance_and_the_prototype_chain)
 - [Reflect.construct() - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect/construct)
 
-symbol
+symbols
 - [Symbol type](https://javascript.info/symbol) 
 - [Symbol - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/- Global_Objects/Symbol) 
 - [Symbol.replace - JavaScript | MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol/replace) 
