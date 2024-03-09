@@ -45,4 +45,21 @@ describe('Function object, NFE', () => {
     expect(Point.toName).toBe('Point');
     expect(Bind.toName).toBe(undefined)
   });
+  it('should this be overwrite', () => {
+    function Over() {
+      this.a = 10
+      return { a: 12, b: 10 };
+    }
+
+    expect(new Over()).toEqual({ a: 12, b: 10 })
+  });
+  it('should be arrow function be auto-bound', () => {
+    function first() {
+      const arrow = () => this;
+
+      return arrow;
+    }
+
+    expect(first.call({a: 1})()).toEqual({a: 1 })
+  });
 });

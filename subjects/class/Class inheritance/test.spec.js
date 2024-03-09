@@ -1,5 +1,5 @@
 import { expect } from "vitest";
-import { Base, BaseClass, DerivatedObj, buildClass } from "../index";
+import { Base, BaseClass, BaseObj, DerivatedObj, buildClass } from "../index";
 
 describe('Class inheritance', () => {
   it('should inheritance accept function', () => {
@@ -16,6 +16,10 @@ describe('Class inheritance', () => {
 
   it('should be possible to use super inside literal objects', () => {
     expect(DerivatedObj.sum()).toEqual(2);
+  });
+
+  it('should method come from from prototype chain', () => {
+    expect(DerivatedObj.getMethod()).toBe(BaseObj.getMethod);
   });
 
   it('should be possible to override a constructor', () => {

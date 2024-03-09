@@ -40,8 +40,12 @@ export function buildClass(BaseClassInherit = class {}) {
 }
 
 export const BaseObj = {
+  prop: 1,
   sum() {
     return 1 + 1
+  },
+  getMethod() {
+    return this;
   }
 }
 
@@ -49,6 +53,9 @@ export const DerivatedObj = {
   __proto__: BaseObj,
   sum() {
     return super.sum();
+  },
+  getMethod() {
+    return super.getMethod;
   }
 }
 
