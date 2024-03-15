@@ -18,6 +18,7 @@ Base.prototype.value = () => 2;
 export function buildClass(BaseClassInherit = class {}) {
   return class extends BaseClassInherit {
     #priv = 12
+    publi = 2
   
     constructor() {
       super();
@@ -32,9 +33,16 @@ export function buildClass(BaseClassInherit = class {}) {
     getPriv() {
       return this.#priv
     }
+
+    getPubli() {
+      return this.publi;
+    }
   
     getInherited() {
       return this.property
+    }
+    static hasPrivProperty(obj) {
+      if (#priv in obj) return true;
     }
   }
 }

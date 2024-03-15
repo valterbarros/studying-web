@@ -60,4 +60,35 @@ describe('Class basic syntax', () => {
 
     expect(inst1.classFieldMethod === Base1.prototype.classFieldMethod).toBe(false)
   });
+
+  it('should be able to create static computed field', () => {
+    const expre = 'a1';
+
+    class StaticField {
+      static [expre](){}
+    }
+
+    expect(StaticField).toHaveProperty('a1')
+  });
+  it('should be possible to add static initialization', () => {
+    class StaticInitializaton {
+      static prop = 'prop'
+      static {
+        super.prop = 'Prop Changed'
+      }
+    }
+
+    expect(StaticInitializaton.prop).toBe('Prop Changed')
+  });
+  it('should be possible to check if a obj has a private var', () => {
+    const HasPrivate = buildClass();
+
+    expect(HasPrivate.hasPrivProperty(new HasPrivate)).toBe(true);
+  });
+
+  it('should public instance methods fields be added to prototype', async () => {
+    const Derivated = buildClass(class { method() {} });
+
+    expect(Derivated.prototype).toHaveProperty('method')
+  });
 });

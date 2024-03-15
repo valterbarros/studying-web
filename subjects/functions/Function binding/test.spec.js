@@ -62,4 +62,12 @@ describe('Function object, NFE', () => {
 
     expect(first.call({a: 1})()).toEqual({a: 1 })
   });
+  it('should binded not have prototype', () => {
+    function first() {}
+
+    const binded = first.bind(null);
+
+    expect(first).toHaveProperty('prototype');
+    expect(binded).not.toHaveProperty('prototype');
+  });
 });
