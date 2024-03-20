@@ -91,4 +91,9 @@ describe('Class basic syntax', () => {
 
     expect(Derivated.prototype).toHaveProperty('method')
   });
+  it('should be not possible to extends null', () => {
+    const C = class extends null {};
+
+    expect(() => new C()).toThrowError();
+  });
 });
