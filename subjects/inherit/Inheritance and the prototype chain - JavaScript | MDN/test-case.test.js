@@ -1,5 +1,6 @@
 import { expect, it, describe } from 'vitest';
 import { createBox, objInherit } from '.';
+import { objBase } from './index';
 
 describe('objInherit', () => {
   it('should return child propery when it exist (property shadowing)', () => {
@@ -30,5 +31,13 @@ describe('arrow function', () => {
     const arrow = () => {};
 
     expect(arrow.prototype).toBeUndefined();
+  });
+});
+
+describe('Destructuring', () => {
+  it('should look up for properties on prototype chain', () => {
+    const { c } = objInherit
+
+    expect(c).toBe(objBase.c);
   });
 });

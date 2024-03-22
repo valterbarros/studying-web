@@ -1,6 +1,7 @@
-const objBase = {
+export const objBase = {
   a: 1,
   b: 2,
+  c: 3,
   methodA() {
     return this.a + 1;
   },

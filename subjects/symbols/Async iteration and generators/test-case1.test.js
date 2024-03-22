@@ -24,6 +24,15 @@ describe(createRange.name, () => {
       expect(num).toBeTypeOf('number');
     }
   });
+
+  it('should destructuring get only necessary items', () => {
+    const range = new createRange(1, Infinity);
+
+    const [first, second] = range;
+    
+    expect(first).toBe(1)
+    expect(second).toBe(2)
+  });
   
   it('should accept change range value after initialization', () => {
     const range = new createRange(1, 10);

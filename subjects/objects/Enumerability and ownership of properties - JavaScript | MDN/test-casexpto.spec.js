@@ -31,12 +31,14 @@ describe('Object.defineProperty()', () => {
     });
     it('in', () => {
       const obj = { a: 2, __proto__: { b: 1 } };
+      const arr = [1,2,3]
 
       Object.defineProperty(obj, 'c', { enumerable: false });
 
       expect('a' in obj).toBe(true);
       expect('b' in obj).toBe(true);
       expect('c' in obj).toBe(true);
+      expect(0 in arr).toBe(true);
     });
   });
 

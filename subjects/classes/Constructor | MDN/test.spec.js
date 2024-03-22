@@ -10,18 +10,19 @@ describe('Class basic syntax', () => {
     let getPubliResult;
     let getPrivResult;
 
-    const C = buildClass(class {
+    new (buildClass(class {
       prop = 1;
 
       constructor() {
         try {
           getPubliResult = this.getPubli()
           this.getPriv()
+          console.log('err');
         } catch (err) {
           getPrivResult = 'error'
         }
       }
-    });
+    }));
 
     expect(getPubliResult).toBe(undefined);
     expect(getPrivResult).toBe('error');
