@@ -1,5 +1,14 @@
 import { expect, it, describe } from 'vitest'
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Equality_comparisons_and_sameness#same-value-zero_equality
+function sameValueZero(x, y) {
+  if (typeof x === "number" && typeof y === "number") {
+    // x and y are equal (may be -0 and 0) or they are both NaN
+    return x === y || (x !== x && y !== y);
+  }
+  return x === y;
+}
+
 describe('Expressions and operators', () => {
   describe('Bitwise', () => {
     it('should move from left operand to right 2 bits without sign propagation', () => {
@@ -87,5 +96,31 @@ describe('Expressions and operators', () => {
     expect(typeof (new Date())).toBe('object');
     expect(typeof '').toBe('string');
     expect(typeof (() => {})).toBe('function');
+  });
+
+  describe('Equality comparation', () => {
+    const getParams = (expectations) => [
+      [-0, +0],
+      [1, '1'],
+      [true, 1],
+      ['a', new String('a')],
+      [NaN, NaN],
+    ].map((params, index) => [...params, expectations[index]])
+
+    it.each(getParams([true, false, false, false, false]))('should strict equality not run type convertion', (a, b, exp) => {
+      expect(a === b).toBe(exp);
+    });
+
+    it.each(getParams([true, true, true, true, false]))('should loose equality perform type convertion', (a, b, exp) => {
+      expect(a == b).toBe(exp)
+    });
+
+    it.each(getParams([false, false, false, false, true]))('should same-value equality perform type convertion', (a, b, exp) => {
+      expect(Object.is(a, b)).toBe(exp)
+    });
+
+    it.each(getParams([true, false, false, false, true]))('should same-value-zero equality perform type convertion', (a, b, exp) => {
+      expect(sameValueZero(a, b)).toBe(exp)
+    });
   });
 });
