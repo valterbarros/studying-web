@@ -98,6 +98,10 @@ describe('Expressions and operators', () => {
     expect(typeof (() => {})).toBe('function');
   });
 
+  it('should be possible to check if a var exist', () => {
+    expect(typeof someNotExistVar).toBe('undefined');
+  });
+
   describe('Equality comparation', () => {
     const getParams = (expectations) => [
       [-0, +0],

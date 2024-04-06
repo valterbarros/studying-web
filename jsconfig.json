@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "lib": [
+      "ES2023"
+    ]
   },
   "types": [
     "node",

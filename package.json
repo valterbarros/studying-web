@@ -13,8 +13,11 @@
   },
   "engineStrict": true,
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "array-from-async": "^3.0.0"
+  }
 }
