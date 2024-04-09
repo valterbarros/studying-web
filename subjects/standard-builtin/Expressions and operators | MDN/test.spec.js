@@ -127,4 +127,49 @@ describe('Expressions and operators', () => {
       expect(sameValueZero(a, b)).toBe(exp)
     });
   });
+
+  describe('Operator precedence', () => {
+    it('should have different precedence', () => {
+      const a = 1 + 2 * 4
+      const b = 1 + (2 * 4)
+      expect(a).toBe(b);
+    });
+
+    it('should have left associativity', () => {
+      const a = 20 / 2 / 2;
+      const b = (20 / 2) / 2;
+
+      expect(a).toBe(b);
+    });
+
+    it('should have right associativity', () => {
+      const a = 20 ** 2 ** 2;
+      const b = 20 ** (2 ** 2);
+
+      expect(a).toBe(b);
+    });
+
+    // Precedence check -> Associative check(operators with same precedence)
+
+    it('should not run function on a short-circuit', () => {
+      let count = 0;
+
+      function A() {
+        count++;
+        return false;
+      }
+      function B() {
+        count++;
+        return false;
+      }
+      function C() {
+        count++;
+        return true;
+      }
+
+      C() || B() && A()
+
+      expect(count).toBe(1);
+    });
+  });
 });

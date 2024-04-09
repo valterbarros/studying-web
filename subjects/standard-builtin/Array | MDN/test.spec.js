@@ -124,9 +124,11 @@ describe('Array', () => {
       new Promise((resolve) => setTimeout(() => resolve(2), 10)),
       new Promise((resolve) => setTimeout(() => resolve(3), 10)),
       new Promise((resolve) => setTimeout(() => resolve(4), 10)),
-    ]
+    ];
 
-    expect(await Array.fromAsync(asyncIterable)).toEqual([1,2,3,4]);
+    const mapFn = (item) => item + 1;
+
+    expect(await Array.fromAsync(asyncIterable, mapFn)).toEqual([2,3,4,5]);
   });
 
   it('should be possible to perform on array like', () => {
@@ -137,5 +139,13 @@ describe('Array', () => {
     }
 
     expect(Array.prototype.join.call(arrLike, ' ')).toBe('my name');
+  });
+
+  it('should be possible to return an iterator from array', () => {
+    const arr = [1,2,3];
+
+    console.log(arr.values())
+
+    expect(arr.values()[Symbol.toStringTag]).toBe('Array Iterator')
   });
 });
