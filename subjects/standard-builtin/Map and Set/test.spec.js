@@ -21,6 +21,17 @@ describe('Map-set', () => {
       
       expect(Object.fromEntries(map)).toEqual({name: 'valter', name2: 'valter'});
     });
+
+    it('should not be garbage collected after lost reference key', () => {
+      const map = new Map();
+      let user = { name: 'user' }
+
+      map.set(user, 1);
+
+      user = null;
+
+      expect(map.size).toBe(1)
+    });
   });
 
   describe('set', () => {
@@ -39,6 +50,17 @@ describe('Map-set', () => {
       }
       
       expect(operations).not.toThrowError();
+    });
+
+    it('should not be garbage collected after lost reference value', () => {
+      const set = new Set();
+      let user = { name: 'user' }
+
+      set.add(user, 1);
+
+      user = null;
+
+      expect(set.size).toBe(1)
     });
   });
 });
