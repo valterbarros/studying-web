@@ -19,5 +19,23 @@ describe('WeakMap and WeakSet', () => {
       expect(() => weak.add(user, 1)).not.toThrowError();
       expect(() => weak.add('string', 1)).toThrowError();
     });
+
+    it('should binded this keep be reachable reference', () => {
+      let obj = { a: 1 };
+
+      const weak = new WeakSet();
+      weak.add(obj)
+
+      function ensure() {
+        expect(weak.has(this))
+        expect(obj).toBeNull();
+      }
+
+      const binded = ensure.bind(obj);
+
+      setTimeout(binded);
+
+      obj = null;
+    });
   });
 });

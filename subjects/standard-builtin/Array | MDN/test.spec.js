@@ -1,7 +1,4 @@
 import { it, describe, expect } from "vitest";
-import fromAsync from 'array-from-async';
-
-Array.fromAsync = fromAsync;
 
 describe('Array', () => {
   it('should be possible to increase or decrease array', () => {

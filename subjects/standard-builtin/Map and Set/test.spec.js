@@ -62,5 +62,48 @@ describe('Map-set', () => {
 
       expect(set.size).toBe(1)
     });
+
+    it('should be possible to run union of sets', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([1, 4, 9]);
+      const union = evens.union(squares)
+      expect([...union]).toEqual([2,4,6,8,1,9])
+    });
+    it('should be possible to run difference of sets', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([1, 4, 9]);
+      const difference = evens.difference(squares)
+      expect([...difference]).toEqual([2,6,8])
+    });
+    it('should be possible to get if is super set of', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([4, 2]);
+      const isSuperSet = evens.isSupersetOf(squares)
+      expect(isSuperSet).toBe(true)
+    });
+    it('should be possible to get if is sub set of', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([4, 2]);
+      const isSubSet = squares.isSubsetOf(evens)
+      expect(isSubSet).toBe(true)
+    });
+    it('should be possible to run symmetric difference', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([4, 2]);
+      const symmetricDifference = squares.symmetricDifference(evens);
+      expect([...symmetricDifference]).toEqual([6,8]);
+    });
+    it('should be possible to run intersection', () => {
+      const evens = new Set([2, 4, 6, 8]);
+      const squares = new Set([4, 2]);
+      const intersection = squares.intersection(evens);
+      expect([...intersection]).toEqual([4,2]);
+    });
+    it('should be possible to get if is disjoint set of other', () => {
+      const evens = new Set([1, 3, 6, 8]);
+      const squares = new Set([4, 2]);
+      const isDisjoint = squares.isDisjointFrom(evens);
+      expect(isDisjoint).toBe(true);
+    });
   });
 });
