@@ -1,10 +1,14 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "module": "ESNext",
     "lib": [
       "ES2023"
     ],
     "types": ["vitest/globals"],
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
   },
   "typeAcquisition": {
     "include": [
@@ -14,4 +18,5 @@
   "types": [
     "node",
   ],
+  "exclude": ["node_modules"],
 }
