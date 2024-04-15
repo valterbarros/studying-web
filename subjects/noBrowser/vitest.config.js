@@ -6,6 +6,8 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['../../vitest.setup.js'],
-    name: 'noBrowser'
+    name: 'noBrowser',
+    allowOnly: true,
+    passWithNoTests: false,
   },
 });

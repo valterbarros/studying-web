@@ -8,6 +8,6 @@ export default defineProject({
       name: 'chrome'
     },
     globals: true,
-    name: 'browser'
+    name: 'browser',
   }
 });
