@@ -1,6 +1,6 @@
 describe('Proxy and Reflect', () => {
   describe('Proxy', () => {
-    it.each([[], () => {}, '', ({})])('should be possible to create proxy with many types', (type) => {
+    it.each([[], () => { }, '', ({})])('should be possible to create proxy with many types', (type) => {
       expect(() => new Proxy(type, {}).not.throwError())
     });
 
@@ -9,15 +9,12 @@ describe('Proxy and Reflect', () => {
 
       expect(new Proxy(object, {}) === object).toBe(false);
     });
-  
+
     it('should be possible to proxy a function', () => {
-      let isCalled = false
-  
-      function original(a) {
+      const original = vi.fn((a) => {
         expect(a).not.toBeNull();
-        isCalled = true
-      }
-  
+      });
+
       const proxy = new Proxy(original, {
         construct(...args) {
           console.log(args);
@@ -25,48 +22,44 @@ describe('Proxy and Reflect', () => {
         },
         get: console.log,
       })
-  
+
       proxy({ a: 1 });
-  
-      expect(isCalled).toBe(true);
+
+      expect(original).toBeCalled();
     });
-  
+
     it('should be possible to proxy an object', async () => {
-      let isCalled = false;
-  
+      const getOwnFn = vi.fn(() => ({
+        enumerable: true,
+        configurable: true
+      }));
+
       const proxy = new Proxy({ key0: 1, key1: 2, key2: 3 }, {
         ownKeys(target) {
           return Object.keys(target).filter((key) => target[key] > 1);
         },
-        getOwnPropertyDescriptor() {
-          isCalled = true
-  
-          return {
-            enumerable: true,
-            configurable: true
-          }
-        }
+        getOwnPropertyDescriptor: getOwnFn
       });
-      
+
       expect(Object.keys(proxy)).toEqual(['key1', 'key2']);
-      expect(isCalled).toBeTruthy();
+      expect(getOwnFn).toBeCalled();
     });
-  
+
     it('should getPrototypeOf return same from target', () => {
-      const original = function(){}
-  
+      const original = function () { }
+
       const proxy = new Proxy(original, {})
-  
+
       expect(Object.getPrototypeOf(proxy)).toBe(Function.prototype);
     });
 
     it('should be possible to create a revocable proxy', () => {
-      const object = { a: 1};
+      const object = { a: 1 };
 
       const { proxy, revoke } = Proxy.revocable(object, {});
 
       expect(proxy.a).toBe(1);
-      
+
       revoke();
 
       expect(() => proxy.a).toThrowError();
@@ -104,13 +97,13 @@ describe('Proxy and Reflect', () => {
       }
 
       const proxyWithReceiver = new Proxy(base, {
-        get(){
+        get() {
           return Reflect.get(...arguments)
         }
       });
 
       const proxyWithoutReceiver = new Proxy(base, {
-        get(target, prop){
+        get(target, prop) {
           return target[prop];
         }
       });
@@ -133,7 +126,7 @@ describe('Proxy and Reflect', () => {
       let user = {
         name: "John"
       };
-      
+
       function wrap(target) {
         return new Proxy(target, {
           get(target, prop) {
@@ -147,7 +140,7 @@ describe('Proxy and Reflect', () => {
       }
 
       user = wrap(user);
-      
+
       expect(user.name).toBe('John'); // John
       expect(() => user.age).toThrowError(`Property doesn\'t exist: age`);
     });
