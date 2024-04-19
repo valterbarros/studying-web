@@ -160,7 +160,7 @@ describe('Promises, async/await', () => {
 
     const promises = Promise.any([
       new Promise((resolve) => setTimeout(() => resolve(0), 100)),
-      new Promise((resolve, reject) => setTimeout(() => reject(5), 60)),
+      new Promise((_resolve, reject) => setTimeout(() => reject(5), 60)),
       new Promise((_resolve, reject) => setTimeout(() => reject(error), 50)),
     ]);
 
@@ -184,5 +184,27 @@ describe('Promises, async/await', () => {
     order.push(2);
 
     await vi.waitFor(() => expect(order).toEqual([2,1,3]));
+  });
+
+  it('should asyn wrap whatever value to a promise', () => {
+    async function return1() {
+      return 1;
+    }
+
+    expect(return1()).resolves.toBe(1);
+  });
+
+  it('should be possible to catch error with try..catch', async () => {
+    expect.hasAssertions();
+
+    async function returnThrow() {
+      throw new Error('error');
+    }
+
+    try {
+      await returnThrow();
+    } catch(err) {
+      expect(returnThrow).rejects.toThrowError();;
+    }
   });
 });
