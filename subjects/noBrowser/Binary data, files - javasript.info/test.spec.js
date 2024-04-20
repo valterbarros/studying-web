@@ -1,3 +1,5 @@
+import { FileReader } from "blob-polyfill";
+
 describe('Binary data, files', () => {
   it('should not possible to acess data as normal array', () => {
     const buffer = new ArrayBuffer(16);
@@ -66,6 +68,75 @@ describe('Binary data, files', () => {
       const encoder = new TextEncoder();
 
       expect(String.fromCharCode(encoder.encode('Hello')[0])).toBe('H');
+    });
+  });
+
+  describe('Blob and Files', () => {
+    it('should be possible to create a Blob from arrayBuffer', () => {
+      const blob = new Blob(new Uint8Array([255]), { type: 'text/html' } );
+
+      expect(blob.type).toBe('text/html');
+    });
+
+    it('should be possible to create a blob from text', () => {
+      const encoder = new TextEncoder();
+
+      const buffer = encoder.encode('hello')
+
+      const blob = new Blob(buffer, { type: 'text/html' })
+
+      expect(blob.type).toBe('text/html');
+    });
+
+
+    it('should return stream from blob', async () => {
+      const blob = new Blob(new Uint8Array([255, 133]), { type: 'text/html' } );
+
+      const readableStream = blob.stream()
+
+      const stream = readableStream.getReader();
+
+      let { done, value } = await stream.read();
+
+      expect(value[Symbol.toStringTag]).toBe('Uint8Array');
+
+      while (!done) {
+        ({ done, value } = await stream.read());
+      }
+
+      expect(done).toBe(true);
+    });
+
+    it('should be possible to get array buffer from blob', async () => {
+      const blob = new Blob(new Uint8Array([255]), { type: 'text/html' } );
+
+      const buffer = await blob.arrayBuffer()
+
+      expect(buffer.toString()).toBe('[object ArrayBuffer]');
+    });
+
+    it('should be File inherits from Blob', () => {
+      expect(Object.getPrototypeOf(File)).toBe(Blob)
+    });
+
+    it('should be possible to use FileReader to read blob content', async () => {
+      expect.hasAssertions();
+      const encoder = new TextEncoder();
+
+      const buffer = encoder.encode('hello')
+
+      const blob = new Blob(buffer, { type: 'text/html' })
+
+      const reader = new FileReader(blob);
+
+      await new Promise((resolve) => {
+        reader.onload = () => {
+          expect(reader.result).toBe('104101108108111')
+          resolve();
+        }
+
+        reader.readAsText(blob);
+      })
     });
   });
 });

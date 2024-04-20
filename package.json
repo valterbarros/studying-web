@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "array-from-async": "^3.0.0",
+    "blob-polyfill": "^7.0.20220408",
     "core-js": "^3.36.1"
   }
 }
