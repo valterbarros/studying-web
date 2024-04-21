@@ -1,58 +1,77 @@
 import { FileReader } from "blob-polyfill";
 
 describe('Binary data, files', () => {
-  it('should not possible to acess data as normal array', () => {
-    const buffer = new ArrayBuffer(16);
-
-    expect(buffer[0]).toBeUndefined();
-  });
+  describe('TypedArray', () => {
+    it('should not possible to acess data as normal array', () => {
+      const buffer = new ArrayBuffer(16);
   
-  it('should be possible to acess values from arrayBuffer with a TypedArray', () => {
-    const buffer = new ArrayBuffer(16);
-
-    const view = new Uint8Array(buffer);
+      expect(buffer[0]).toBeUndefined();
+    });
+    
+    it('should be possible to acess values from arrayBuffer with a TypedArray', () => {
+      const buffer = new ArrayBuffer(16);
   
-    expect(view[0]).toBe(0);
-  });
+      const view = new Uint8Array(buffer);
+    
+      expect(view[0]).toBe(0);
+    });
+  
+    it('should be possible to pass a normal array to TypedArray', () => {
+      const arr = new Uint8Array([5,4,3]);
+  
+      expect(arr[0]).toBe(5);
+    });
+  
+    it('should Uint8Array threat each byte from buffer as a number from 0 to 255', () => {
+      const arr = new Uint8Array([5,4,3]);
+      
+      const view = new Uint8Array(arr);
+      
+      view[0] = 255;
+      view[1] = 300;
+      
+      // return only the rightmost 8 bits
+      expect(view[0]).toBe(255);
+      expect(view[1]).toBe(44);
+    });
+  
+    it('should be possible to use those methods', () => {
+      const arr = new Uint8Array([5,4,3]);
+  
+      expect(arr.map.toString()).includes('map');
+      expect(arr.slice.toString()).includes('slice')
+      expect(arr.find.toString()).includes('find')
+      expect(arr.reduce.toString()).includes('reduce')
+      expect(arr.set.toString()).includes('set')
+      expect(arr.subarray.toString()).includes('subarray')
+    });
+  
+    it('should be possible to use DataView', () => {
+      let buffer = new Uint8Array([255, 255, 255, 255]).buffer;
+  
+      let dataView = new DataView(buffer);
+  
+      expect(dataView.getUint8(0)).toBe(255);
+      expect(dataView.getUint16(0)).toBe(65535);
+    });
 
-  it('should be possible to pass a normal array to TypedArray', () => {
-    const arr = new Uint8Array([5,4,3]);
+    it('should be possible to create an arrayBuffer resizable', () => {
+      const buf = new ArrayBuffer(8, { maxByteLength: 16 });
 
-    expect(arr[0]).toBe(5);
-  });
+      expect(buf.resizable).toBe(true);
+    });
 
-  it('should Uint8Array threat each byte from buffer as a number from 0 to 255', () => {
-    // return only the rightmost 8 bits
+    it('should clamp number to range 0 to 255', () => {
+      const view = new Uint8ClampedArray([300, 500, 600]);
 
-    const arr = new Uint8Array([5,4,3]);
+      expect([...view]).toEqual([255,255,255]);
+    });
 
-    const view = new Uint8Array(arr);
+    it('should be possible to use array like methods to manipulate TypedArray', () => {
+      const view = new Uint8ClampedArray([300, 500, 600]);
 
-    view[0] = 255;
-    view[1] = 300;
-
-    expect(view[0]).toBe(255);
-    expect(view[1]).toBe(44);
-  });
-
-  it('should be possible to use those methods', () => {
-    const arr = new Uint8Array([5,4,3]);
-
-    expect(arr.map.toString()).includes('map');
-    expect(arr.slice.toString()).includes('slice')
-    expect(arr.find.toString()).includes('find')
-    expect(arr.reduce.toString()).includes('reduce')
-    expect(arr.set.toString()).includes('set')
-    expect(arr.subarray.toString()).includes('subarray')
-  });
-
-  it('should be possible to use DataView', () => {
-    let buffer = new Uint8Array([255, 255, 255, 255]).buffer;
-
-    let dataView = new DataView(buffer);
-
-    expect(dataView.getUint8(0)).toBe(255);
-    expect(dataView.getUint16(0)).toBe(65535);
+      expect([...view.map(() => 200)]).toEqual([200,200,200])
+    });
   });
 
   describe('TextDecoder/Encoder', () => {
@@ -117,6 +136,11 @@ describe('Binary data, files', () => {
 
     it('should be File inherits from Blob', () => {
       expect(Object.getPrototypeOf(File)).toBe(Blob)
+    });
+
+    it('should be possible to instantiate a File', () => {
+      const file = new File(new Uint8Array([1]), 'file');
+      expect(file.name).toBe('file');
     });
 
     it('should be possible to use FileReader to read blob content', async () => {
