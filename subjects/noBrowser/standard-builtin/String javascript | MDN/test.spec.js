@@ -24,6 +24,14 @@ describe('Strings', () => {
     expect('abcd'.localeCompare('abce')).toBe(-1)
   });
 
+  it('should be possible to get indexOf a substring', () => {
+    expect('trying something'.indexOf('ing', 5)).toBe(13);
+  });
+
+  it('should be possible to get substring', () => {
+    expect('trying something'.substring(7)).toBe('something');
+  });
+
   it('should template literal convert var direct to string', () => {
     const object = {
       [Symbol.toPrimitive](hint) {
