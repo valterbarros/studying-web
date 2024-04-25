@@ -11,10 +11,12 @@ describe('Strings', () => {
   it.each([String, (inp) => "" + inp, (inp) => `${inp}`])('should be possible to convert to a string', (fn) => {
     expect(fn(true)).toBe('true');
   });
+
   it('should be possible to not scape without process scape sequences', () => {
     const str1 = String.raw`texto \e`;
     expect(str1).toBe('texto \\e');
   });
+
   it('should be possible to use sort to sort an array of strings', () => {
     const arr = ['e', 'z', 'f', 'k', 'y', 'a'];
     expect(arr.sort()).toEqual(['a', 'e', 'f', 'k', 'y', 'z']);

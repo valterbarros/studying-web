@@ -111,6 +111,16 @@ c
     expect('walking onw moon'.match(/\Bon\b/)[0]).toBe('on');
   });
 
+  it('should be possible to greedy(*?,+?) a quantifier', () => {
+    const re = /<[^<].+?>/d
+
+    let str = '<html><head></head><body></body></html>';
+
+    const match = re.exec(str);
+
+    expect(match[0]).toBe('<html>');
+  });
+
   describe('RegExp.prototype.exec', () => {
     it('should exec return null when not found', () => {
       const re = /c/
@@ -186,6 +196,18 @@ c
       str.matchAll(re);
 
       expect(re.lastIndex).toBe(0);
+    });
+
+    it('should return capture group when using g', () => {
+      const re = /(?<a>a)c(?<b>b)/g
+
+      let str = 'aaaaaacb';
+
+      const result = [...str.matchAll(re)];
+
+      expect(result[0][0]).toBe('acb');
+      expect(result[0][1]).toBe('a');
+      expect(result[0][2]).toBe('b');
     });
   });
 
@@ -275,6 +297,14 @@ c
       const re = /test/;
 
       const str = 'test';
+
+      expect(re.test(str)).toBe(true);
+    });
+
+    it('should be possible to reference named group', () => {
+      const re = /Text(?<dash>-|\/)Text\k<dash>Text/g
+
+      let str = 'Text/Text/Text';
 
       expect(re.test(str)).toBe(true);
     });
