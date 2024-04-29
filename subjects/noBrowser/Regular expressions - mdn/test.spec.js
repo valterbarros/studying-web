@@ -121,6 +121,55 @@ c
     expect(match[0]).toBe('<html>');
   });
 
+  describe('Unicode mode', () => {
+    it('should be possible to use \p to use unicode characters', () => {
+      const re = /\p{General_Category=Letter}/v
+  
+      let str = '<html><head></head><body></body></html>';
+  
+      const match = re.exec(str);
+  
+      expect(match[0]).toBe('h');
+    });
+  
+    it('should be possible to use \p to use unicode characters to get currency symbol', () => {
+      const re = /\p{Sc}/v
+  
+      let str = '$';
+  
+      const match = re.exec(str);
+  
+      expect(match[0]).toBe('$');
+    });
+
+    it('should be possible to run subtraction on character classes', () => {
+      const re = /[\w--z]/v
+  
+      let str1 = 'z';
+      let str2 = 'a';
+  
+      const match = re.exec(str1);
+      const match2 = re.exec(str2);
+  
+      expect(match).toBeNull();
+      expect(match2[0]).toBe('a');
+    });
+
+    it('should be possible to run intersection on character classes', () => {
+      const re = /[\w&&a]/v;
+  
+      let str1 = 'z';
+      let str2 = 'a';
+  
+      const match = re.exec(str1);
+      re.lastIndex = 0;
+      const match2 = re.exec(str2);
+  
+      expect(match).toBeNull();
+      expect(match2[0]).toBe('a');
+    });
+  });
+
   describe('RegExp.prototype.exec', () => {
     it('should exec return null when not found', () => {
       const re = /c/
