@@ -3,7 +3,8 @@
     "target": "ESNext",
     "module": "ESNext",
     "lib": [
-      "ES2023"
+      "ES2023",
+      "DOM"
     ],
     "types": ["vitest/globals"],
     "moduleResolution": "Bundler",

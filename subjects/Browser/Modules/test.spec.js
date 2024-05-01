@@ -4,11 +4,11 @@ vi.stubGlobal('alert', alertMock);
 describe('Modules', () => {
   it('should module be evaluated only once', async () => {
     const script = document.createElement('script')
-    script.src = 'http://127.0.0.1:5500/fixtures/module.js';
+    script.src = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/module.js`;
     script.type = 'module'; 
 
     const script2 = document.createElement('script')
-    script2.src = 'http://127.0.0.1:5500/fixtures/module.js';
+    script2.src = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/module.js`;
     script2.type = 'module'; 
 
     document.head.appendChild(script);
