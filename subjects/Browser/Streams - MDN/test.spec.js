@@ -102,8 +102,6 @@ describe('Streams - MDN', () => {
     const reader1 = teedOf[0].getReader();
     const reader2 = teedOf[1].getReader();
 
-    console.log(reader1);
-
     const { value: value1 } = await reader1.read();
     const { value: value2 } = await reader2.read();
 
@@ -121,10 +119,10 @@ describe('Streams - MDN', () => {
     });
 
     const reader = stream.getReader();
-
-    setTimeout(() => reader.releaseLock())
-
+    
     vi.waitFor(() => expect(reader.read()).rejects.toThrowError());
+
+    reader.releaseLock()
   });
 
   it('should be possible to cancel the stream read', () => {
@@ -137,10 +135,10 @@ describe('Streams - MDN', () => {
     });
 
     const reader = stream.getReader();
-
-    setTimeout(() => reader.cancel())
-
+    
     vi.waitFor(() => expect(reader.read()).resolves.toMatchObject({ done: true }));
+
+    reader.cancel()
   });
 
   it('should be possible to process text data', async () => {
@@ -177,6 +175,27 @@ describe('Streams - MDN', () => {
     
     expect(text).toMatch(/([A-Z]+(?=\s))/);
   });
+
+  it('should be possible to pipeTo a stream', async () => {
+    const textUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/text.txt`;
+
+    const response = await fetch(textUrl);
+
+    const readableStream = response.body;
+
+    let externalString = '';
+
+    const writableStream = new WritableStream({
+      start() {},
+      write(chunk) {
+        externalString = String.fromCharCode(...chunk);
+      }
+    });
+
+    await readableStream.pipeTo(writableStream);
+
+    expect(externalString).toMatch(/([a-z]+(?=\s))/);
+  });
   
   it('should TransformStream returns a writable stream and readable stream', () => {
     const { readable, writable } = new TransformStream({
@@ -188,5 +207,61 @@ describe('Streams - MDN', () => {
 
     expect(readable).toBeInstanceOf(ReadableStream);
     expect(writable).toBeInstanceOf(WritableStream);
+  });
+
+  it('should be possible to pass a object with writable and readable to pipeThrough', async () => {
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue('string')
+      }
+    });
+    
+    const transformLike = {
+      readable: new ReadableStream({
+        start(controller) {
+          controller.enqueue('enqueue');
+        }
+      }),
+      writable: new WritableStream({
+        write(chunk, controller) {
+          // nothing here
+        }
+      }),
+    }
+
+    const reader = stream.pipeThrough(transformLike).getReader();
+
+    const { value } = await reader.read();
+
+    expect(value).toBe('enqueue');
+  });
+
+  it('should be possible to use a WritableStream', async () => {
+    expect.hasAssertions();
+
+    let final = '';
+
+    const writableStream = new WritableStream({
+      start() {},
+      async write(chunk) {
+        await new Promise((resolve) => {
+          setTimeout(() => {
+            final += chunk;
+            resolve();
+          }, 10)
+        });
+      }
+    });
+
+    const writter = writableStream.getWriter();
+
+    const letters = 'abcdefghijklmnopqrstuvxz';
+
+    for (const char of letters) {
+      await writter.ready;
+      writter.write(char);
+    }
+
+    vi.waitFor(() => expect(final).toBe(letters));
   });
 });
