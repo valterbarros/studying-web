@@ -263,6 +263,26 @@ describe('Streams - MDN', () => {
     expect(final).toBe(letters);
   });
 
+  it('should create ReadableStream and done is true', async () => {
+    const stream = new ReadableStream({
+      start(controller) {
+        controller.enqueue('string')
+        controller.enqueue('string')
+        controller.enqueue('string')
+        controller.enqueue('string')
+        controller.close();
+      }
+    });
+
+    const reader = stream.getReader();
+
+    for (let index = 0; index < 5; index++) {
+      const { value, done } = await reader.read();
+
+      console.log(value, done);
+    }
+  });
+
   describe('Byte stream', () => {
     const DEFAULT_CHUNK_SIZE = 400;
 
@@ -286,27 +306,29 @@ describe('Streams - MDN', () => {
         type: 'bytes',
         start(controller) {
           async function creating() {
-            await new Promise((resolve) => resolve());
-
-            if (bytesRead > maxDataRead) {
-              return controller.close();
-            }
-
-            if (controller.byobRequest) {
-              const view = controller.byobRequest.view
-    
-              const bytesRead = generateDateInto(view.buffer, 100, view.byteLength);
-
-              controller.byobRequest.respond(bytesRead)
-            } else {
-              const buffer = new ArrayBuffer(DEFAULT_CHUNK_SIZE);
+            await new Promise((resolve) => {
+              if (bytesRead > maxDataRead) {
+                return controller.close();
+              }
   
-              const bytesRead = generateDateInto(buffer, 100, DEFAULT_CHUNK_SIZE);
+              if (controller.byobRequest) {
+                const view = controller.byobRequest.view
+      
+                const bytesRead = generateDateInto(view.buffer, 100, view.byteLength);
+  
+                controller.byobRequest.respond(bytesRead)
+              } else {
+                const buffer = new ArrayBuffer(DEFAULT_CHUNK_SIZE);
+    
+                const bytesRead = generateDateInto(buffer, 100, DEFAULT_CHUNK_SIZE);
+  
+                controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
+              }
 
-              controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
-            }
-            
-            return creating();
+              resolve();
+              
+              return creating();
+            });
           }
   
           creating();
@@ -322,20 +344,21 @@ describe('Streams - MDN', () => {
       const reader = stream.getReader({ mode: 'byob' });
 
       async function reading() {
-        
         const { value, done } = await reader.read(new Uint8Array(buffer, offset));
         
-        if (done) return;
+        if (done) return done;
         
         buffer = value.buffer;
         offset += value.byteLength;
 
-        if (offset < buffer.byteLength) return;
+        if (offset > buffer.byteLength) done;
 
-        reading();
+        return await reading();
       }
 
-      await reading();
+      const done = await reading();
+
+      expect(done).toBe(true);
     });
 
     it('should be possible to create a readable push byte stream', async () => {
