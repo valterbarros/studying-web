@@ -215,7 +215,7 @@ describe('Streams - MDN', () => {
         controller.enqueue('string')
       }
     });
-    
+
     const transformLike = {
       readable: new ReadableStream({
         start(controller) {
@@ -248,7 +248,7 @@ describe('Streams - MDN', () => {
           setTimeout(() => {
             final += chunk;
             resolve();
-          }, 10)
+          }, 10);
         });
       }
     });
@@ -263,5 +263,45 @@ describe('Streams - MDN', () => {
     }
 
     vi.waitFor(() => expect(final).toBe(letters));
+  });
+
+  it('should be possible to create a readable push byte stream', async () => {
+    let count = 0;
+    const stream = new ReadableStream({
+      type: 'bytes',
+      start(controller) {
+        function reading() {
+          if (count++ > 10) return controller.close();
+
+          if (controller.byobRequest) {
+            const view = controller.byobRequest.view
+  
+            for (let index = 0; index < 19; index++) {
+              view[index] = index + 1;
+            }
+  
+            controller.byobRequest.respond(19)
+          } else {
+            const view = new Uint8Array(20);
+    
+            for (let index = 0; index < 19; index++) {
+              view[index] = index + 1;
+            }
+    
+            controller.enqueue(new Uint8Array(view, 0, 2));
+            // controller.byobRequest.respond(0)
+          }
+          
+          return reading();
+        }
+
+        reading();
+      },
+    });
+
+    const reader = stream.getReader();
+    await reader.read(); 
+    const { value, done } = await reader.read(); 
+    console.log(value);
   });
 });
