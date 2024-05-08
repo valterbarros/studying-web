@@ -5,7 +5,8 @@ export default defineProject({
   test: {
     browser: {
       enabled: true,
-      name: 'chrome'
+      name: 'chrome',
+      headless: process.env.VITE_HEADLESS === 'true',
     },
     globals: true,
     name: 'browser',

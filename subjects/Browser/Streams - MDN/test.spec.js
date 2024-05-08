@@ -244,64 +244,107 @@ describe('Streams - MDN', () => {
     const writableStream = new WritableStream({
       start() {},
       async write(chunk) {
-        await new Promise((resolve) => {
-          setTimeout(() => {
-            final += chunk;
-            resolve();
-          }, 10);
+        return await new Promise((resolve) => {
+          final += chunk;
+          resolve();
         });
       }
     });
 
     const writter = writableStream.getWriter();
 
-    const letters = 'abcdefghijklmnopqrstuvxz';
+    const letters = 'abcde';
 
     for (const char of letters) {
       await writter.ready;
-      writter.write(char);
+      await writter.write(char);
     }
 
-    vi.waitFor(() => expect(final).toBe(letters));
+    expect(final).toBe(letters);
   });
 
-  it('should be possible to create a readable push byte stream', async () => {
-    let count = 0;
-    const stream = new ReadableStream({
-      type: 'bytes',
-      start(controller) {
-        function reading() {
-          if (count++ > 10) return controller.close();
+  describe('Byte stream', () => {
+    const DEFAULT_CHUNK_SIZE = 400;
 
-          if (controller.byobRequest) {
-            const view = controller.byobRequest.view
-  
-            for (let index = 0; index < 19; index++) {
-              view[index] = index + 1;
-            }
-  
-            controller.byobRequest.respond(19)
-          } else {
-            const view = new Uint8Array(20);
-    
-            for (let index = 0; index < 19; index++) {
-              view[index] = index + 1;
-            }
-    
-            controller.enqueue(new Uint8Array(view, 0, 2));
-            // controller.byobRequest.respond(0)
-          }
-          
-          return reading();
+    function getByteStream() {
+      let bytesRead = 0;
+      const maxDataRead = 800;
+
+      function generateDateInto(buffer, size = 100, length) {
+        const view = new Uint8Array(buffer, 0, length);
+
+        for (let index = 0; index < size; index++) {
+          view[index] = index + 1;
         }
 
+        bytesRead += 100;
+
+        return size
+      }
+
+      return new ReadableStream({
+        type: 'bytes',
+        start(controller) {
+          async function creating() {
+            await new Promise((resolve) => resolve());
+
+            if (bytesRead > maxDataRead) {
+              return controller.close();
+            }
+
+            if (controller.byobRequest) {
+              const view = controller.byobRequest.view
+    
+              const bytesRead = generateDateInto(view.buffer, 100, view.byteLength);
+
+              controller.byobRequest.respond(bytesRead)
+            } else {
+              const buffer = new ArrayBuffer(DEFAULT_CHUNK_SIZE);
+  
+              const bytesRead = generateDateInto(buffer, 100, DEFAULT_CHUNK_SIZE);
+
+              controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
+            }
+            
+            return creating();
+          }
+  
+          creating();
+        },
+      });
+    }
+
+    it('should be possible to read with byod a readable push byte stream', async () => {
+      const stream = getByteStream();
+      let buffer = new ArrayBuffer(4000);
+      let offset = 0;
+  
+      const reader = stream.getReader({ mode: 'byob' });
+
+      async function reading() {
+        
+        const { value, done } = await reader.read(new Uint8Array(buffer, offset));
+        
+        if (done) return;
+        
+        buffer = value.buffer;
+        offset += value.byteLength;
+
+        if (offset < buffer.byteLength) return;
+
         reading();
-      },
+      }
+
+      await reading();
     });
 
-    const reader = stream.getReader();
-    await reader.read(); 
-    const { value, done } = await reader.read(); 
-    console.log(value);
+    it('should be possible to create a readable push byte stream', async () => {
+      const stream = getByteStream();
+  
+      const reader = stream.getReader();
+      await reader.read(); 
+      const { value } = await reader.read(); 
+      expect(value).instanceOf(Uint8Array);
+    });
   });
 });
