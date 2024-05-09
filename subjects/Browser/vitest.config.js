@@ -8,7 +8,6 @@ export default defineProject({
       name: 'chrome',
       headless: process.env.VITE_HEADLESS === 'true',
     },
-    testTimeout: '10000',
     globals: true,
     name: 'browser',
   }

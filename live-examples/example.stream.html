@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Example Stream</title>
+  <script>
+
+    function getByteStream() {
+      let bytesRead = 0;
+      let maxDataRead = 300;
+      const DEFAULT_CHUNK_SIZE = 400;
+
+      function generateDateInto(buffer, size = 100, length) {
+        const view = new Uint8Array(buffer, 0, length);
+
+        maxDataRead -= 100;
+
+        size = Math.max(maxDataRead, 0);
+
+        for (let index = 0; index < size; index++) {
+          view[index] = index + 1;
+        }
+
+        return size;
+      }
+
+      return new ReadableStream({
+        type: 'bytes',
+        start(controller) {
+          function creating() {
+            return new Promise((resolve) => setTimeout(resolve, 500)).then(() => {
+              console.log('creating start', controller.byobRequest);
+  
+              if (controller.byobRequest) {
+                const view = controller.byobRequest.view
+      
+                const bytesRead = generateDateInto(view.buffer, 100, view.byteLength);
+
+                if (bytesRead === 0) controller.close();
+  
+                controller.byobRequest.respond(bytesRead);
+              } else {
+                const buffer = new ArrayBuffer(DEFAULT_CHUNK_SIZE);
+    
+                const bytesRead = generateDateInto(buffer, 100, DEFAULT_CHUNK_SIZE);
+
+                console.log(bytesRead);
+
+                if (bytesRead === 0) {
+                  controller.close();
+                } else {
+                  controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
+                }
+              }
+
+              if (maxDataRead <= 0) {
+                return;
+              }
+  
+              return creating();
+            });
+          }
+
+          creating().catch(console.log);
+        },
+        cancel: console.log,
+      });
+    }
+
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    void async function () {
+      const stream = getByteStream();
+      let buffer = new ArrayBuffer(4000);
+      let offset = 0;
+
+      const reader = stream.getReader({ mode: 'byob' });
+
+      let done = false;
+      let value;
+
+      reader.closed.then(() => console.log('closed reader'));
+
+      ({ value, done } = await reader.read(new Uint8Array(buffer, offset)));
+
+      console.log('consume 1', done);
+
+      // await delay(1000);
+
+      ({ value, done } = await reader.read(new Uint8Array(value.buffer, offset)));
+
+      console.log('consume 2', done);
+
+      ({ value, done } = await reader.read(new Uint8Array(value.buffer, offset)));
+
+      console.log('consume 3', done);
+
+      ({ value, done } = await reader.read(new Uint8Array(value.buffer, offset)));
+
+      console.log('%c consume 4', 'background: #222; color: #bada55', done);
+
+      // while(!done) {
+      //   console.log('done', done)
+      
+      //   const promise = reader.read(new Uint8Array(buffer, offset));
+      //   promise.then(console.count);
+      
+      //   ({ value, done } = await promise);
+      
+      //   if (done) break;
+      
+      //   buffer = value.buffer;
+      //   offset += value.byteLength;
+      // }
+
+      console.log('after read')
+    }();
+  </script>
+</head>
+
+<body>
+
+</body>
+  open console
+</html>

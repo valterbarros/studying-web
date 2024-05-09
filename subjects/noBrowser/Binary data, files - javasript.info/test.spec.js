@@ -58,7 +58,12 @@ describe('Binary data, files', () => {
     it('should be possible to create an arrayBuffer resizable', () => {
       const buf = new ArrayBuffer(8, { maxByteLength: 16 });
 
+      expect(buf.byteLength).toBe(8);
+
+      buf.resize(10)
+
       expect(buf.resizable).toBe(true);
+      expect(buf.byteLength).toBe(10);
     });
 
     it('should clamp number to range 0 to 255', () => {
@@ -71,6 +76,43 @@ describe('Binary data, files', () => {
       const view = new Uint8ClampedArray([300, 500, 600]);
 
       expect([...view.map(() => 200)]).toEqual([200,200,200])
+    });
+
+    it('should be possible to change offset of TypedArray', () => {
+      const buf = new ArrayBuffer(100);
+
+      let view = new Uint8Array(buf, 20);
+      view = new Uint8Array(buf, 30);
+      view = new Uint8Array(buf, 40);
+
+      expect(view.byteLength).toBe(60);
+    });
+
+    it('should be possible to length of TypedArray', () => {
+      const buf = new ArrayBuffer(100);
+
+      let view = new Uint8Array(buf);
+
+      for (let index = 0; index < buf.byteLength; index++) {
+        view[index] = index + 1;        
+      }
+
+      expect(view[99]).toBe(100);
+
+      const lengthView = new Uint8Array(buf, 20, 80);
+
+      expect(lengthView[81]).toBeUndefined();
+
+      expect(lengthView[0]).toEqual(view[20]);
+    });
+
+    it('should be possible to detach a TypedArray', () => {
+      const buf = new ArrayBuffer(100);
+
+      buf.transfer();
+
+      expect(buf.byteLength).toBe(0);
+      expect(buf.detached).toBe(true);
     });
   });
 

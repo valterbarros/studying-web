@@ -276,63 +276,102 @@ describe('Streams - MDN', () => {
 
     const reader = stream.getReader();
 
-    for (let index = 0; index < 5; index++) {
-      const { value, done } = await reader.read();
+    let value;
+    let done;
 
-      console.log(value, done);
+    for (let index = 0; index < 5; index++) {
+      ({ value, done } = await reader.read());
     }
+
+    expect(done).toBe(true);
+    expect(value).toBeUndefined();
+  });
+
+  it.only('should create ReadableStream as pull', async () => {
+    const stream = new ReadableStream({
+      pull(controller) {
+        controller.enqueue('string')
+        controller.close();
+      }
+    });
+
+    const reader = stream.getReader();
+
+    await reader.read();
+
+    const { value, done } = await reader.read();
+
+    expect(done).toBe(true);
+    expect(value).toBeUndefined();
   });
 
   describe('Byte stream', () => {
     const DEFAULT_CHUNK_SIZE = 400;
 
-    function getByteStream() {
-      let bytesRead = 0;
-      const maxDataRead = 800;
+    let totalRead = 0;
+    const maxDataRead = 800;
+    const maxReadPerTime = 100;
 
-      function generateDateInto(buffer, size = 100, length) {
-        const view = new Uint8Array(buffer, 0, length);
+    beforeEach(() => {
+      totalRead = 0;
+    });
 
-        for (let index = 0; index < size; index++) {
-          view[index] = index + 1;
-        }
+    function generateDateInto(buffer, length) {
+      const view = new Uint8Array(buffer, 0, length);
+      
+      const size = Math.max(Math.min(maxDataRead - totalRead, maxReadPerTime), 0);
 
-        bytesRead += 100;
+      const randomSize = Math.floor(Math.random() * size);
 
-        return size
+      for (let index = 0; index < randomSize; index++) {
+        view[index] = index + 1;
       }
 
+      return randomSize;
+    }
+
+    function getByteStream() {
       return new ReadableStream({
         type: 'bytes',
         start(controller) {
-          async function creating() {
-            await new Promise((resolve) => {
-              if (bytesRead > maxDataRead) {
-                return controller.close();
-              }
-  
+          function creating() {
+            return new Promise((resolve) => setTimeout(resolve, 10)).then(() => {
               if (controller.byobRequest) {
                 const view = controller.byobRequest.view
-      
+
                 const bytesRead = generateDateInto(view.buffer, 100, view.byteLength);
+
+                totalRead += bytesRead;
+
+                if (bytesRead === 0) controller.close();
   
-                controller.byobRequest.respond(bytesRead)
+                controller.byobRequest.respond(bytesRead);
               } else {
                 const buffer = new ArrayBuffer(DEFAULT_CHUNK_SIZE);
     
                 const bytesRead = generateDateInto(buffer, 100, DEFAULT_CHUNK_SIZE);
-  
-                controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
+
+                totalRead += bytesRead;
+
+                if (bytesRead === 0) {
+                  controller.close();
+                } else {
+                  controller.enqueue(new Uint8Array(buffer, 0, bytesRead));
+                }
               }
 
-              resolve();
               
+              if (totalRead >= maxDataRead) {
+                return;
+              }
+  
               return creating();
             });
           }
-  
-          creating();
+
+          creating().catch(console.log);
         },
+        cancel: console.log,
       });
     }
 
@@ -351,8 +390,6 @@ describe('Streams - MDN', () => {
         buffer = value.buffer;
         offset += value.byteLength;
 
-        if (offset > buffer.byteLength) done;
-
         return await reading();
       }
 
@@ -361,12 +398,37 @@ describe('Streams - MDN', () => {
       expect(done).toBe(true);
     });
 
-    it('should be possible to create a readable push byte stream', async () => {
-      const stream = getByteStream();
-  
-      const reader = stream.getReader();
-      await reader.read(); 
-      const { value } = await reader.read(); 
+    it('should be possible to read with byod a readable pull byte stream', async () => {
+      const stream = new ReadableStream({
+        type: 'bytes',
+        start(_controller) {},
+        pull(controller) {
+          if (controller.byobRequest) {
+            const view = controller.byobRequest.view
+
+            const bytesRead = generateDateInto(view.buffer, view.byteLength);
+            totalRead += bytesRead;
+
+            if (bytesRead === 0) {
+              controller.close();
+              controller.byobRequest.respond(0);
+            }
+
+            controller.byobRequest.respond(bytesRead);
+          }
+        }
+      });
+
+      const reader = stream.getReader({ mode: 'byob' });
+
+      let done;
+      let value;
+
+      while(!done) {
+        ({ done, value } = await reader.read(new Uint8Array(4000)));
+      }
+
+      expect(done).toBe(true);
       expect(value).instanceOf(Uint8Array);
     });
   });
