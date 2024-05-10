@@ -239,6 +239,19 @@ streams
   - [Using readable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_streams) 
   - [Using readable byte streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_readable_byte_streams) 
   - [Using writable streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API/Using_writable_streams)
+  - [ReadableStreamBYOBRequest: respond() method - Web APIs | MDN - 1](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamBYOBRequest/respond) 
+  - [ReadableByteStreamController: byobRequest property - Web APIs | MDN - 1](https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController/byobRequest) 
+  - [TransformStream: TransformStream() constructor - Web APIs | MDN - 2](https://developer.mozilla.org/en-US/docs/Web/API/TransformStream/TransformStream) 
+  - [ReadableStreamDefaultReader: releaseLock() method - Web APIs | MDN - 1](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/releaseLock) 
+  - [ReadableStreamDefaultReader: cancel() method - Web APIs | MDN - 2](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/cancel) 
+  - [ReadableStreamDefaultReader: read() method - Web APIs | MDN - 3](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultReader/read) 
+  - [ReadableStream: tee() method - Web APIs | MDN - 3](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/tee) 
+  - [TextEncoderStream: TextEncoderStream() constructor - Web APIs | MDN - 0](https://developer.mozilla.org/en-US/docs/Web/API/TextEncoderStream/TextEncoderStream) 
+  - [ReadableStream: pipeThrough() method - Web APIs | MDN - 2](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/pipeThrough) 
+  - [ReadableStreamDefaultController: enqueue() method - Web APIs | MDN - 1](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStreamDefaultController/enqueue) 
+  - [Response: Response() constructor - Web APIs | MDN - 1](https://developer.mozilla.org/en-US/docs/Web/API/Response/Response) 
+  - [ReadableStream() constructor - Web APIs | MDN - 4](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream/ReadableStream) 
+  - [ReadableByteStreamController - Web APIs | MDN - 3](https://developer.mozilla.org/en-US/docs/Web/API/ReadableByteStreamController) 
 
 others
  
@@ -248,3 +261,10 @@ others
 - [Deep copy - MDN Web Docs Glossary: Definitions of Web-related terms | MDN](https://developer.mozilla.org/en-US/docs/Glossary/Deep_copy)
 - [Garbage collection](https://javascript.info/garbage-collection) 
 - [Proxy and Reflect](https://javascript.info/proxy) 
+
+
+Duração total MDN: 771
+
+Duração total javascript.info: 282
+
+Duração total: 1053m
