@@ -263,8 +263,8 @@ others
 - [Proxy and Reflect](https://javascript.info/proxy) 
 
 
-Duração total MDN: 771
+Time total MDN: 771
 
-Duração total javascript.info: 282
+Time total javascript.info: 282
 
-Duração total: 1053m
+Total all: 1053m
