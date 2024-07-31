@@ -27,4 +27,18 @@ describe('Document - Javascript.info',() => {
     expect(table.rows.length).toBe(3);
     expect(table.rows[0].cells.length).toBe(2);
   });
+
+  it('should be possible to get closest ancestor',() => {
+    const div = render(`
+      <span class="container">
+        <div class="row">
+          <p>Paragraph</p>
+        </div>
+      </span>
+    `);
+
+    const p = div.querySelector('p');
+
+    expect(p.closest('.container')).toBeInstanceOf(HTMLSpanElement);
+  });
 });
