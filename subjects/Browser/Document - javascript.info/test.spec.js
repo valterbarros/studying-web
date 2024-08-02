@@ -41,4 +41,18 @@ describe('Document - Javascript.info',() => {
 
     expect(p.closest('.container')).toBeInstanceOf(HTMLSpanElement);
   });
+
+  it('should be possible to get resolved css values',() => {
+    const container = render(`
+      <div style="font-size: 20px;">
+        <span style="height: 1em;"></span>
+      </div>
+      `);
+
+    document.body.append(container);
+
+    expect(getComputedStyle(container.querySelector('span')).height).toBe('20px');
+
+    container.remove();
+  });
 });
