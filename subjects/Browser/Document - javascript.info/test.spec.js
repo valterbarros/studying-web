@@ -1,6 +1,6 @@
 import { render } from "../../../utils/render";
 
-describe('Document - Javascript.info',() => {
+describe('Introduction to events - javascript.info',() => {
   it('should be possible to navigate through rows and cells from table',() => {
     const table = render(`
       <table>
