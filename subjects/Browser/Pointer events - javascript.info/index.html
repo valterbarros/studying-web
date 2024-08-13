@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PointerEvents</title>
+  </head>
+  <body>
+    <button id="button" style="position: absolute;">
+      button
+    </button>
+    <script defer>
+      button.onpointerdown = (e) => {
+        // elem.setPointerCapture(pointerId) – binds events with the given pointerId to elem.
+        // After the call all pointer events with the same pointerId will have elem as the target 
+        // (as if happened on elem), no matter where in document they really happened.
+        button.setPointerCapture(e.pointerId);
+
+        button.onpointermove = (event) => {
+          console.log('move')
+          button.style.left = event.clientX + 'px';
+          button.style.top = event.clientY + 'px';
+        }
+        
+        button.onpointerup = function(event) {
+          button.onpointermove = null;
+          button.onpointerup = null;
+          // ...also process the "drag end" if needed
+        };
+
+        console.log('hey')
+    };
+    </script>
+  </body>
+</html>

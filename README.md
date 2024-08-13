@@ -1,5 +1,14 @@
 A repo with some test cases about web in general, with purpose to study.
 
+run docker:
+
+```
+docker build -t cypress-study .
+
+
+docker run --rm --name cypress-study -v ${PWD}:/app -it cypress-study /bin/bash
+```
+
 main source: https://developer.mozilla.org/ and https://javascript.info/
 
 Subjects

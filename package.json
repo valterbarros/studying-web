@@ -5,15 +5,19 @@
   "description": "\"Map and Set\" \"The old \"var\"\" \"Reference Type\" \"Symbol type, Symbol - JavaScript | MDN\" \"Symbol.replace - JavaScript | MDN\" \"Symbol.species - JavaScript\" \"MDN, Symbol.toPrimitive\" \"JavaScript | MDN, Symbol.unscopables\" \"JavaScript | MDN, Symbol() constructor - JavaScript | MDN\" \"Symbol.for() - JavaScript | MDN\" \"Symbol.keyFor() - JavaScript | MDN\" \"Object - JavaScript | MDN\" \"Object.prototype.valueOf() - JavaScript | MDN\" \"Object.prototype.toString() - JavaScript | MDN\" \"Symbol.toPrimitive - JavaScript | MDN\" \"Object.prototype.hasOwnProperty() - JavaScript | MDN\" \"Object.setPrototypeOf() - JavaScript | MDN\" \"Object.prototype.constructor - JavaScript | MDN\" \"Object.seal() - JavaScript | MDN\" \"Object.keys() - JavaScript | MDN\" \"Object.isSealed() - JavaScript | MDN\" \"Object.isFrozen() - JavaScript | MDN\" \"Object.is() - JavaScript | MDN\" \"Object.hasOwn() - JavaScript | MDN\" \"Object.groupBy() - JavaScript | MDN\" \"Object.getPrototypeOf() - JavaScript | MDN\" \"Object.getOwnPropertySymbols() - JavaScript | MDN\" \"Object.getOwnPropertyNames() - JavaScript | MDN\" \"Object.getOwnPropertyDescriptors() - JavaScript | MDN\" \"Object.fromEntries() - JavaScript | MDN\" \"Enumerability and ownership of properties - JavaScript | MDN\" \"Object.preventExtensions() - JavaScript | MDN\" \"Object.entries() - JavaScript | MDN\" \"Object.defineProperty() - JavaScript | MDN\" \"Object.defineProperties() - JavaScript | MDN\" \"Spread syntax (...) - JavaScript | MDN\" \"Shallow copy - MDN Web Docs Glossary: Definitions of Web-related terms | MDN\" \"Deep copy - MDN Web Docs Glossary: Definitions of Web-related terms | MDN\" \"Prototypes, inheritance, Inheritance and the prototype chain - JavaScript | MDN\" \"Object.prototype.isPrototypeOf() - JavaScript | MDN, instanceof - JavaScript | MDN\" \"Generators, Iteration protocols - JavaScript | MDN\" \"Iterables\" \"Async iteration and generators\"",
   "main": "index.js",
   "devDependencies": {
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/user-event": "^14.5.2",
     "@vitest/browser": "^1.5.0",
     "@wdio/cli": "^8.36.0",
+    "cypress": "^13.13.2",
     "jsdom": "^22.1.0",
     "vitest": "^1.5.0"
   },
   "scripts": {
     "test": "vitest",
     "test:browser": "vitest --project browser",
-    "test:noBrowser": "vitest --project noBrowser"
+    "test:noBrowser": "vitest --project noBrowser",
+    "cy:open": "CYPRESS_REMOTE_DEBUGGING_PORT=9222 cypress open"
   },
   "engineStrict": true,
   "engines": {
