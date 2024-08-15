@@ -6,10 +6,15 @@
       "ES2023",
       "DOM"
     ],
-    "types": ["vitest/globals"],
+    "types": [
+      "vitest/globals",
+      "@vitest/browser/matchers",
+      "@vitest/browser/providers/playwright"
+    ],
     "moduleResolution": "Bundler",
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "."
   },
   "typeAcquisition": {
     "include": [
