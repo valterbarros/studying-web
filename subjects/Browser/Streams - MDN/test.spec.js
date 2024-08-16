@@ -1,6 +1,6 @@
 describe('Streams - MDN', () => {
   it('should be possible to stream Response.body', async () => {
-    const imgUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/salluti.jpeg`;
+    const imgUrl = `${import.meta.env.VITE_HOST_PUBLIC}/salluti.jpeg`;
 
     const response = await fetch(imgUrl);
 
@@ -55,7 +55,7 @@ describe('Streams - MDN', () => {
   it('should be possible to pass a ReadableStream to a Response object', async () => {
     const closeFn = vi.fn();
 
-    const imgUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/salluti.jpeg`;
+    const imgUrl = `${import.meta.env.VITE_HOST_PUBLIC}/salluti.jpeg`;
 
     const response = await fetch(imgUrl);
 
@@ -142,7 +142,7 @@ describe('Streams - MDN', () => {
   });
 
   it('should be possible to process text data', async () => {
-    const textUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/text.txt`;
+    const textUrl = `${import.meta.env.VITE_HOST_PUBLIC}/text.txt`;
 
     const response = await fetch(textUrl);
 
@@ -154,7 +154,7 @@ describe('Streams - MDN', () => {
   });
 
   it('should be possible to pipeThrough a stream', async () => {
-    const textUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/text.txt`;
+    const textUrl = `${import.meta.env.VITE_HOST_PUBLIC}/text.txt`;
 
     const response = await fetch(textUrl);
 
@@ -177,7 +177,7 @@ describe('Streams - MDN', () => {
   });
 
   it('should be possible to pipeTo a stream', async () => {
-    const textUrl = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/text.txt`;
+    const textUrl = `${import.meta.env.VITE_HOST_PUBLIC}/text.txt`;
 
     const response = await fetch(textUrl);
 

@@ -1,4 +1,4 @@
-// Serve it with live server to run test subjects/Browser/Modules/test.spec.js
+// run npm run server to run test subjects/Browser/Modules/test.spec.js
 window.count ||= 0
 window.count += 1;
 

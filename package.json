@@ -12,11 +12,13 @@
     "@vitest/ui": "^2.0.5",
     "@wdio/cli": "^8.36.0",
     "cypress": "^13.13.2",
+    "express": "^4.19.2",
     "jsdom": "^22.1.0",
     "playwright": "^1.46.0",
     "vitest": "^2.0.0"
   },
   "scripts": {
+    "server": "node ./server/index.js",
     "test": "vitest",
     "test:browser": "vitest --project browser",
     "test:noBrowser": "vitest --project noBrowser",
@@ -31,6 +33,7 @@
   "dependencies": {
     "array-from-async": "^3.0.0",
     "blob-polyfill": "^7.0.20220408",
-    "core-js": "^3.36.1"
+    "core-js": "^3.36.1",
+    "cors": "^2.8.5"
   }
 }

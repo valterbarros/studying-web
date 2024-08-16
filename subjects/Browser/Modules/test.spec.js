@@ -2,14 +2,17 @@ const alertMock = vi.fn();
 vi.stubGlobal('alert', alertMock);
 
 describe('Modules', () => {
-  it('should module be evaluated only once', async () => {
+  it.only('should module be evaluated only once', async () => {
     const script = document.createElement('script')
-    script.src = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/module.js`;
+    script.src = `${import.meta.env.VITE_HOST_PUBLIC}/module.js`;
     script.type = 'module'; 
 
     const script2 = document.createElement('script')
-    script2.src = `${import.meta.env.VITE_HOST_FIXTURES}/fixtures/module.js`;
-    script2.type = 'module'; 
+    script2.src = `${import.meta.env.VITE_HOST_PUBLIC}/module.js`;
+    script2.type = 'module';
+
+    console.log(script2.async);
+    
 
     document.head.appendChild(script);
     document.head.appendChild(script2);
@@ -38,7 +41,7 @@ describe('Modules', () => {
 
     const script = document.createElement('script');
     script.innerHTML = `
-      import('http://127.0.0.1:5500/fixtures/module.js').then(alert)
+      import('http://127.0.0.1:5500/module.js').then(alert)
     `;
 
     document.head.appendChild(script);
