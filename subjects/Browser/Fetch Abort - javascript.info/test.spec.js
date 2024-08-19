@@ -16,7 +16,6 @@ describe('Fetch Abort - javascript.info', () => {
 
     const p = new Promise((_, reject) => {
       controller.signal.addEventListener('abort', () => {
-        console.log(controller.signal.reason)
         reject(controller.signal.reason)
       });
     });
