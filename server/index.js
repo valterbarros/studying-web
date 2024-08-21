@@ -22,6 +22,15 @@ app.post("/posti", (request,response) => {
   response.send(status);
 });
 
+app.get("/digits", (request, response) => {
+  response.appendHeader('Content-Type', 'text/event-stream; charset=utf-8');
+  response.appendHeader('Cache-Control', 'no-cache');
+
+  response.write('event: bye\ndata: bye-bye\n\n');
+  response.write('data: ' + 1 + '\n\n');
+  response.write(`id: 1 \n\n`);
+});
+
 app.listen(PORT, () => {
   console.log("Server is Listening on PORT:", PORT);
 });
