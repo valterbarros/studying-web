@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: grid;
+      background-color: hsl(240 14% 93%);
+    }
+    
+    .container {
+      display: grid;
+      margin-inline: auto;
+      width: 95%;
+      gap: 1.5rem;
+      grid-template-areas:
+        'one'
+        'two'
+        'three'
+        'four'
+        'five';
+      grid-auto-columns: 1fr;
+    }
+
+    .item {
+      width: 100%;
+      min-height: 15rem;
+      background-color: white;
+      border-radius: 0.5rem;
+    }
+
+    .item:nth-child(1) {
+      grid-area: one;
+    }
+
+    .item:nth-child(2) {
+      grid-area: two;
+    }
+
+    .item:nth-child(3) {
+      grid-area: three;
+    }
+
+    .item:nth-child(4) {
+      grid-area: four;
+    }
+
+    .item:nth-child(5) {
+      grid-area: five;
+    }
+
+    .item:nth-child(5) {
+      height: calc(30rem + 1.5rem);
+    }
+
+    @media screen and (min-width: 30rem) {
+      .container {
+        grid-template-areas: 
+          'one one'
+          'two five'
+          'three five'
+          'four four';
+      }
+    }
+
+    @media screen and (min-width: 50rem) {
+      .container {
+        grid-template-areas: 
+          'one one two five'
+          'three four four five';
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item last
+      </div>
+    </div>
+  </body>
+</html>
