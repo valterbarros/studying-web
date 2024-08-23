@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: green;
+      margin: 1rem;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    h1 {
+      color: white;
+      margin-block-end: 1rem;
+    }
+
+    .card {
+      background-color: white;
+      padding-inline: 1rem;
+      padding-block: 0.5rem;
+      border-radius: 0.2rem;
+      margin-block-end: 1rem;
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+
+      img {
+        width: 100%;
+      }
+
+      figcaption {
+        font-size: 0.8rem;
+      }
+
+      h2 {
+        font-size: clamp(1.5rem, 7cqi, 3rem);
+      }
+    }
+
+    main {
+      display: grid;
+      gap: 1rem;
+    }
+
+    @media screen and (width > 768px) {
+      main {
+        grid-template-columns: 1fr 300px;
+      }
+    }
+
+    .primary-content {
+      .card {
+        background-color: cornflowerblue;
+      }
+    }
+
+    .primary-content,
+    .cards {
+      container-type: inline-size;
+    }
+
+    .cards {
+      container-name: cards;
+    }
+
+    .primary-content {
+      container-name: primary-content;
+    }
+
+    @container cards (width > 45ch) {
+      .card {
+        grid-template-columns: auto minmax(25ch, 1fr);
+
+        h2 {
+          grid-column: span 2;
+        }
+      }
+
+      main {
+        flex-wrap: nowrap;
+        background-color: yellow;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="primary-content">
+      <h1>Media queries and container queries</h1>
+      <p>
+        You can use or to test for a match among more than one feature, resolving to true if any of the features are true. For example, the following query tests for devices that have a monochrome display or hover capability:
+      </p>
+
+      <article class="card">
+        <h2>Card 1</h2>
+  
+        <figure>
+          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/elephant-660-480.jpg" alt="">
+        </figure>
+        <p>scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop pub</p>
+      </article>
+    </section>
+  
+    <section class="cards">
+      <article class="card">
+        <h2>Card 1</h2>
+    
+        <figure>
+          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/elephant-660-480.jpg" alt="">
+        </figure>
+        <p>scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop pub</p>
+      </article>
+    
+      <article class="card">
+        <h2>Card 1</h2>
+  
+        <figure>
+          <img src="https://interactive-examples.mdn.mozilla.net/media/cc0-images/elephant-660-480.jpg" alt="">
+        </figure>
+        <p>scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop pub</p>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
