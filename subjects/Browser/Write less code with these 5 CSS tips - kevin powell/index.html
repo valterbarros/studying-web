@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <style>
+    .item {
+      display: inline-block;
+      width: 50%;
+      border: 1px solid grey;
+    }
+    .item:not(:last-child) {
+      border-bottom: none;
+    }
+
+    .container:has(.item:hover) .item:not(:hover) {
+      background-color: grey;
+    }
+
+    .item:nth-child(n + 3):nth-child(-n + 4) {
+      color: red;
+    }
+
+    .button {
+      .inverse & {
+        color: red;
+      }
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item
+      </div>
+
+      <div class="item">
+        item last
+      </div>
+
+    </div>
+    <div class="inverse">
+      <button class="button">Button to change!</button>
+    </div>
+  </body>
+</html>
