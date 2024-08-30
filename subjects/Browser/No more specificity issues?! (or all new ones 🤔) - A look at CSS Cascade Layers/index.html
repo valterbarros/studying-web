@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <style>
+    @layer one {
+      h1 {
+        color: red;
+      }
+    }
+
+    /* Stronger layer h1 is blue */
+    @layer two {
+      h1 {
+        color: blue;
+      }
+    }
+
+    /* already declared and is weak */
+    @layer one {
+      h1 {
+        color: yellow;
+      }
+    }
+  </style>
+
+  <!-- Declare layers at start and cascade -->
+  <style>
+    @layer four, three;
+
+    /* Come by second stronger */
+    @layer three {
+      span {
+        color: yellow;
+      }
+    }
+
+    /* Come by first weak */
+    @layer four {
+      span {
+        color: red;
+      }
+    }
+  </style>
+  <body>
+    <!-- css has those layers: -->
+    <!-- user agent layer -->
+    <!-- user layer -->
+    <!-- author layer -->
+
+    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque soluta </h1>
+    <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. At ipsam quasi quaerat assumenda odio nesciunt corporis sequi voluptatem, quibusdam reiciendis a fugit dolore. Exercitationem nemo quis ut neque optio consequatur!</span>
+
+    <br>
+
+    <!-- dont get color inherit -->
+    <label for="">
+      Input:
+      <input type="text">
+    </label>
+  </body>
+</html>
