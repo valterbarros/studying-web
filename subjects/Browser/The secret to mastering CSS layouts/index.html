@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .columns-flex {
+      display: flex;
+      width: 100%;
+      margin-inline: auto;
+      gap: 2rem;
+
+      > .card {
+        flex: 1;
+      }
+    }
+    
+    .two {
+      grid-column-start: 2;
+    }
+
+    .one {
+      padding: 2rem;
+    }
+
+    img {
+      max-width: 100%;
+    }
+
+    .columns-grid {
+      display: grid;
+      width: 100%;
+      margin-inline: auto;
+      gap: 2rem;
+      grid-auto-columns: 1fr 1fr;
+    }
+  </style>
+  <body>
+    flex:
+
+    <hr>
+
+    <!-- flex dont force children to live inside cell and padding affect the parent -->
+    <div class="columns-flex">
+      <div class="card one">
+        <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
+        <p>
+          item1
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium inventore placeat, rem velit expedita alias nihil ad modi facere error, nam voluptatibus ducimus blanditiis hic, dolorum earum excepturi. Iste, cumque.</p>
+      </div>
+      <div class="card two">
+        <!-- <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset=""> -->
+        <p>
+          item 2
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium inventore placeat, rem velit expedita alias nihil ad modi facere error, nam voluptatibus ducimus blanditiis hic, dolorum earum excepturi. Iste, cumque.</p>
+      </div>
+    </div>
+
+    grid:
+
+    <hr>
+
+    <!-- grid force children to live inside cell and padding don't affect the parent -->
+    <div class="columns-grid">
+      <div class="card one">
+        <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
+        <p>
+          item1
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium inventore placeat, rem velit expedita alias nihil ad modi facere error, nam voluptatibus ducimus blanditiis hic, dolorum earum excepturi. Iste, cumque.</p>
+      </div>
+      <div class="card two">
+        <!-- <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset=""> -->
+        <p>
+          item 2
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium inventore placeat, rem velit expedita alias nihil ad modi facere error, nam voluptatibus ducimus blanditiis hic, dolorum earum excepturi. Iste, cumque.</p>
+      </div>
+    </div>
+  </body>
+</html>
