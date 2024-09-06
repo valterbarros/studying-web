@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <canvas>Not supported</canvas>
+
+  <script>
+    const canvas = document.querySelector('canvas');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const context = canvas.getContext('2d');
+
+    // context.fillStyle = 'yellow';
+    // context.fillRect(100, 100, 100, 100);
+    // context.fillStyle = 'purple';
+    // context.fillRect(200, 300, 100, 100);
+    // 
+    // context.beginPath();
+    // context.moveTo(50, 60);
+    // context.lineTo(100, 100);
+    // context.lineTo(500, 200);
+    // context.strokeStyle = 'red';
+    // context.stroke();
+
+    class Circle {
+      x
+      y
+      dx
+      dy
+      radius
+
+      constructor(x,y,dx,dy, radius) {
+        this.x = x;
+        this.y = y;
+        this.dx = dx;
+        this.dy = dy;
+        this.radius = radius;
+      }
+
+      draw() {
+        context.beginPath();
+        context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+        context.stroke();
+      }
+
+      update() {
+        if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0) {
+          this.dx = - this.dx;
+          console.log(this.x); 
+        }
+
+        if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
+          this.dy = - this.dy;
+          console.log(this.x); 
+        }
+
+        this.x += this.dx;
+        this.y += this.dy;
+
+        this.draw();
+      }
+
+      static build(x,y,dx,dy, radius) {
+        return new Circle(x,y,dx,dy, radius);
+      }
+    }
+
+    let currentMovementX = 0;
+    let currentMovementY = 0;
+    const circles = [];
+    
+    for (let index = 0; index < 100; index++) {
+      const x = Math.random() * window.innerHeight;
+      const y = Math.random() * window.innerWidth;
+      const dx = Math.random() - 0.5 + 2;
+      const dy = Math.random() - 0.5 + 2;
+      const radius = Math.random() * 3 + 1;
+
+      circles.push(Circle.build(x, y, dx, dy, radius));
+    }
+
+    let factor = -1;
+  
+    function animate(e) {
+      context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+      for (let index = 0; index < circles.length; index++) {
+        circles[index].update();
+      }
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  </script>
+</body>
+</html>
