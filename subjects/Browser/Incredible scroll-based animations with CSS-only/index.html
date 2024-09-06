@@ -13,34 +13,73 @@
     }
 
     @keyframes fade-in {
-      from {
+      to {
         scale: 0.8;
         opacity: 0;
       }
+    }
+
+    @keyframes slide {
+      from {
+        translate: -100%;
+      }
+
       to {
-        scale: 1;
-        opacity: 1;
+        translate: 0%;
       }
     }
 
-    
-    img {
-      transform-origin: left;
-      animation: fade-in linear;
-      animation-timeline: view();
-      max-width: 100%;
+    @media (prefers-reduced-motion: no-preference) {
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-inline: 200px;
+        /* scroll-timeline-name: --containerTimeline; */
+        /* overflow-y: auto; */
+        /* max-height: 600px; */
+      }
+      img {
+        transform-origin: left;
+        animation: fade-in linear;
+        animation-timeline: view();
+        animation-range: exit;
+        max-width: 100%;
+      }
+
+      .items {
+        display: flex;
+        list-style: none;
+        gap: 2rem;
+
+        > .item {
+          animation: slide linear;
+          animation-timeline: view();
+          padding: 0.5rem;
+          background: #ccc;
+        }
+      }
     }
   </style>
   <body>
-    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt iste optio mollitia possimus consequatur odit fuga magnam quisquam maxime voluptates rerum numquam quae aliquam sequi, asperiores esse earum, dolore tempore.</h1>
-    <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
-    
-    <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt iste optio mollitia possimus consequatur odit fuga magnam quisquam maxime voluptates rerum numquam quae aliquam sequi, asperiores esse earum, dolore tempore.</h1>
-    <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
+    <main class="container">
+      <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt iste optio mollitia possimus consequatur odit fuga magnam quisquam maxime voluptates rerum numquam quae aliquam sequi, asperiores esse earum, dolore tempore.</h1>
+      <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis itaque dolorem, expedita enim consequatur, officiis dolor porro ad doloremque laboriosam incidunt magni libero nisi repudiandae quod? Optio harum saepe quo?</p>
+
+      <ul class="items">
+        <li class="item">Item1</li>
+        <li class="item">Item1</li>
+        <li class="item">Item1</li>
+        <li class="item">Item1</li>
+      </ul>
+      
+      <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt iste optio mollitia possimus consequatur odit fuga magnam quisquam maxime voluptates rerum numquam quae aliquam sequi, asperiores esse earum, dolore tempore.</h1>
+      <img src="https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg" alt="" srcset="">
+    </main>
   </body>
 </html>
