@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      body {
+        background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas>Not supported</canvas>
+
+    <script>
+      const canvas = document.querySelector('canvas');
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const context = canvas.getContext('2d');
+
+      const pointer = {
+        x: window.innerHeight / 2,
+        y: window.innerWidth / 2,
+      };
+
+      const colorArray = [
+        '#146152',
+        '#44803F',
+        '#B4CF66',
+        '#FFEC5C',
+        '#FF5A33',
+      ];
+
+      const gravity = 1;
+      const friction = 0.59;
+
+      function randomColor() {
+        return colorArray[Math.floor(Math.random() * colorArray.length)];
+      }
+
+      function randomIntFromRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      function getDistance(x1, y1, x2, y2) {
+        const xDistance = x2 - x1;
+        const yDistance = y2 - y1;
+
+        return Math.sqrt(Math.pow(xDistance, 2) + Math.pow(yDistance, 2));
+      }
+
+      document.addEventListener('pointermove', (e) => {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+      });
+
+      window.addEventListener('resize', () => window.location.reload());
+
+      class Particle {
+        x
+        y
+        dx
+        dy
+        radius
+        color = randomColor();
+        mass = 1
+
+        constructor(x, y, dx, dy, radius) {
+          this.x = x;
+          this.y = y;
+          this.dx = dx;
+          this.dy = dy;
+          this.radius = radius;
+          this.minRadius = radius;
+        }
+
+        draw() {
+          context.beginPath();
+          context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+          context.strokeStyle = this.color;
+          context.fillStyle = this.color;
+          context.fill();
+          context.stroke();
+          context.closePath();
+        }
+
+        update() {
+          const closes = [];
+          for (let i = 0; i < particles.length; i++) {
+            const particle = particles[i];
+            
+            if (particle === this) continue;
+ 
+            if (getDistance(this.x, this.y, particle.x, particle.y) - this.radius * 2 < 300) {
+              closes.push(particle);
+            }
+          }
+
+          if (getDistance(pointer.x, pointer.y, this.x, this.y) < 300) {
+            for (let index = 0; index < closes.length; index++) {
+              const p = closes[index];
+              
+              context.beginPath();
+              context.moveTo(this.x, this.y);
+              context.lineTo(pointer.x, pointer.y);
+              context.stroke();
+            }
+          }
+
+          this.draw();
+        }
+      }
+
+      const particles = [];
+
+      for (let i = 0; i < 50; i++) {
+        const radius = 10;
+        let x = randomIntFromRange(radius, window.innerWidth - radius);
+        let y = randomIntFromRange(radius, window.innerHeight - radius);
+        const dx = randomIntFromRange(-2, 2);
+        const dy = randomIntFromRange(-2, 2);
+
+        if (i > 0) {
+          for (let j = 0; j < particles.length; j++) {
+            const particle = particles[j];
+            
+            if (getDistance(x, y, particle.x, particle.y) - radius * 2 < 0) {
+              x = randomIntFromRange(radius, window.innerWidth - radius);
+              y = randomIntFromRange(radius, window.innerHeight - radius);
+
+              j = -1;
+            }
+          }
+        }
+
+        particles.push(new Particle(x, y, dx, dy, radius));
+      }
+
+      function animate(e) {
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        for (let index = 0; index < particles.length; index++) {
+          particles[index].update();
+        }
+
+        requestAnimationFrame(animate);
+      };
+
+      animate();
+    </script>
+  </body>
+</html>
