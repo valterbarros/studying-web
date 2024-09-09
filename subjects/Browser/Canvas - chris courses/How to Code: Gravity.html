@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas>Not supported</canvas>
+
+    <script>
+      const canvas = document.querySelector('canvas');
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const context = canvas.getContext('2d');
+
+      const pointer = {
+        x: window.innerHeight / 2,
+        y: window.innerWidth / 2,
+      };
+
+      const colorArray = [
+        '#146152',
+        '#44803F',
+        '#B4CF66',
+        '#FFEC5C',
+        '#FF5A33',
+      ];
+
+      const gravity = 1;
+      const friction = 0.59;
+
+      function randomColor() {
+        return colorArray[Math.floor(Math.random() * colorArray.length)];
+      }
+
+      function randomIntFromRange(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+
+      document.addEventListener('pointermove', (e) => {
+        pointer.x = e.clientX;
+        pointer.y = e.clientY;
+      });
+
+      window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      });
+
+      class Ball {
+        x
+        y
+        dx
+        dy
+        radius
+        color = randomColor();
+
+        constructor(x, y, dx, dy, radius) {
+          this.x = x;
+          this.y = y;
+          this.dx = dx;
+          this.dy = dy;
+          this.radius = radius;
+          this.minRadius = radius;
+        }
+
+        draw() {
+          context.beginPath();
+          context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+          
+          context.fillStyle = this.color;
+          context.fill();
+          context.stroke();
+          context.closePath();
+        }
+
+        update() {
+          if (this.y + this.radius + this.dy > window.innerHeight) {
+            this.dy = - this.dy * friction;
+          } else {
+            this.dy += gravity;
+          }
+
+          if (this.x + this.radius + this.dx > window.innerWidth || this.x - this.radius <= 0) {
+            this.dx = -this.dx;
+          }
+
+          this.y += this.dy;
+          this.x += this.dx;
+
+          this.draw();
+        }
+      }
+
+      let currentMovementX = 0;
+      let currentMovementY = 0;
+      const balls = [];
+      
+      for (let index = 0; index < 800; index++) {
+        const radius = randomIntFromRange(8, 20);
+        const x = randomIntFromRange(radius, window.innerWidth - radius);
+        const y = randomIntFromRange(0, window.innerHeight - radius);
+        const dx = randomIntFromRange(-2, 2);
+        const dy = randomIntFromRange(-2, 2);
+
+        balls.push(new Ball(x,y,dx,dy, radius)); 
+      }
+
+      function animate(e) {
+        context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+        for (let index = 0; index < balls.length; index++) {
+          balls[index].update();
+        }
+
+        requestAnimationFrame(animate);
+      };
+
+      animate();
+    </script>
+  </body>
+</html>

@@ -39,40 +39,83 @@
     // context.strokeStyle = 'red';
     // context.stroke();
 
+    const pointer = {
+      x: window.innerHeight / 2,
+      y: window.innerWidth / 2,
+    };
+
+    const colorArray = [
+      '#146152',
+      '#44803F',
+      '#B4CF66',
+      '#FFEC5C',
+      '#FF5A33',
+    ];
+
+    function randomColor() {
+      return colorArray[Math.floor(Math.random() * colorArray.length)];
+    }
+
+    function randomIntFromRange(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    document.addEventListener('pointermove', (e) => {
+      pointer.x = e.clientX;
+      pointer.y = e.clientY;
+    });
+
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+
     class Circle {
       x
       y
       dx
       dy
       radius
+      color = randomColor();
 
-      constructor(x,y,dx,dy, radius) {
+      constructor(x, y, dx, dy, radius) {
         this.x = x;
         this.y = y;
         this.dx = dx;
         this.dy = dy;
         this.radius = radius;
+        this.minRadius = radius;
       }
 
       draw() {
         context.beginPath();
         context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-        context.stroke();
+        // context.stroke();
+        
+        context.fillStyle = this.color;
+        context.fill();
       }
 
       update() {
         if (this.x + this.radius > window.innerWidth || this.x - this.radius < 0) {
           this.dx = - this.dx;
-          console.log(this.x); 
         }
 
         if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
           this.dy = - this.dy;
-          console.log(this.x); 
         }
 
         this.x += this.dx;
         this.y += this.dy;
+
+        if (
+          pointer.x - this.x < 50 && pointer.x - this.x > -50
+          && pointer.y - this.y < 50 && pointer.y - this.y > -50 
+        ) {
+          this.radius = Math.min(this.radius + 1, 40);
+        } else {
+          this.radius = Math.max(this.radius - 1, this.minRadius);
+        }
 
         this.draw();
       }
@@ -86,18 +129,16 @@
     let currentMovementY = 0;
     const circles = [];
     
-    for (let index = 0; index < 100; index++) {
-      const x = Math.random() * window.innerHeight;
-      const y = Math.random() * window.innerWidth;
-      const dx = Math.random() - 0.5 + 2;
-      const dy = Math.random() - 0.5 + 2;
+    for (let index = 0; index < 800; index++) {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      const dx = Math.random() - 0.5;
+      const dy = Math.random() - 0.5;
       const radius = Math.random() * 3 + 1;
 
       circles.push(Circle.build(x, y, dx, dy, radius));
     }
 
-    let factor = -1;
-  
     function animate(e) {
       context.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
