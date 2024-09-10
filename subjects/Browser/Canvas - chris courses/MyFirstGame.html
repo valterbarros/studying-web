@@ -181,6 +181,7 @@
           this.radius = radius;
           this.color = color || randomColor();
           this.mass = 1;
+          this.collided = false;
         }
 
         draw() {
@@ -209,27 +210,27 @@
           if (this.y + this.radius > window.innerHeight || this.y - this.radius < 0) {
             this.dy = - this.dy;
           }
-          
-          const factor = this.y > rect.y ? -1 : 1;
 
-          const ballH = this.y + this.radius * factor
-          const ballW = this.x + this.radius
+          const isCollided = rect.x + rect.width >= this.x - this.radius &&
+            rect.x <= this.x + this.radius &&
+            rect.y + rect.height >= this.y - this.radius &&
+            rect.y <= this.y + this.radius
 
-          if (
-            (ballH - rect.y) >= 0
-            && (ballH - rect.y) <= rect.height
-            && (ballW - rect.x) >= 0
-            && (ballW - rect.x) <= rect.width
-          ) {
+          if (isCollided) {
+            this.collided = true;
+            console.log('coliision');
+
             updateScore();
             this.dy = - this.dy;
 
-            this.dy = Math.min((Math.abs(this.dy) + 1), 15) * Math.sign(this.dy);
-            this.dx = Math.min((Math.abs(this.dx) + 1), 15) * Math.sign(this.dx);
+            // this.dy = Math.min((Math.abs(this.dy) + 1), 15) * Math.sign(this.dy);
+            // this.dx = Math.min((Math.abs(this.dx) + 1), 15) * Math.sign(this.dx);
+          } else if(!isCollided) {
+            this.collided = false;
           }
 
-          this.x += this.dx;
-          this.y += this.dy;
+          // this.x += this.dx;
+          // this.y += this.dy;
 
           this.draw();
         }
@@ -252,6 +253,7 @@
 
         update() {
           this.x = pointer.x - this.width / 2;
+          this.y = pointer.y - this.height / 2;
 
           this.draw();
         }
@@ -261,20 +263,20 @@
       const ball2 = new Ball(300, 220, 5, 5, 30);
       const rect = new Rect(200, window.innerHeight / 2 - 35, 300, 70);
 
-      const balls = [ball, ball2];
+      const balls = [];
 
-      for (let i = 0; i < 5; i++) {
+      for (let i = 0; i < 7; i++) {
         const radius = 20;
         let x = randomIntFromRange(radius, window.innerWidth - radius);
         let y = randomIntFromRange(radius, window.innerHeight - radius);
-        const dx = randomIntFromRange(-2, 2);
-        const dy = randomIntFromRange(-2, 2);
+        const dx = randomIntFromRange(-2, 10);
+        const dy = randomIntFromRange(-2, 10);
 
         balls.push(new Ball(x, y, dx, dy, radius));
       }
       
       function animate() {
-        document.querySelector('.menu').style.display = 'none';
+        // document.querySelector('.menu').style.display = 'none';
 
         context.clearRect(0, 0, window.innerWidth, window.innerHeight);
         rect.update();
@@ -287,19 +289,21 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById('start').addEventListener('click', animate);
+        // document.getElementById('start').addEventListener('click', animate);
       });
+
+      animate();
     </script>
 
     <div class="score">
       Score: 0
     </div>
 
-    <div class="menu">
+    <!-- <div class="menu">
       <div class="items">
         <p>Ball Game!</p>
         <button id="start">Start</button>
       </div>
-    </div>
+    </div> -->
   </body>
 </html>
