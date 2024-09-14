@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+        /* margin: 0;
+        padding: 0; */
+        box-sizing: border-box;
+      }
+
+      img {
+        max-width: 100%;
+      }
+
+      #canvas {
+        border: 1px solid #000;
+      }
+
+      .placeholder {
+        position: absolute;
+        background-color: black;
+        opacity: 0.4;
+        width: 200px;
+        height: 200px;
+        touch-action: none;
+        pointer-events: none;
+        cursor: zoom-in;
+      }
+    </style>
+  </head>
+  <body>
+    <p>canvas:</p>
+    <canvas id="canvas"></canvas>
+
+    <hr>
+
+    <p>
+      img:
+    </p>
+
+    <img id="image" src="./background.jpg" alt="">
+    <div class="placeholder"></div>
+
+    <script>
+      const canvas = document.querySelector('canvas');
+      canvas.width = 800;
+      canvas.height = 600;
+
+      const image = new Image();
+      image.src = './background.jpg';
+      
+      image.onload = () => {
+        const aspect = image.naturalWidth / image.naturalHeight;
+  
+        const h = canvas.width / aspect;
+        canvas.height = h;
+      };
+
+      const ctx = canvas.getContext('2d');
+
+      const imageElement = document.querySelector('#image');
+      const placeholder = document.querySelector('.placeholder');
+
+      imageElement.onpointerover = (event) => {
+        imageElement.setPointerCapture(event.pointerId);
+
+        imageElement.onpointermove = (e) => {
+          const aspect = imageElement.naturalWidth / imageElement.naturalHeight;
+          let sx = (e.pageX - imageElement.offsetLeft) - 100;
+          let sy = (e.pageY - imageElement.offsetTop) - 50;
+
+          placeholder.style = `
+            left: ${e.pageX - 100}px;
+            top: ${e.pageY - 100 / aspect}px;
+            height: ${200 / aspect}px;
+          `;
+
+          ctx.clearRect(0, 0, canvas.width, canvas.height)
+          ctx.drawImage(imageElement, sx, sy, 200, 200 / aspect, 0, 0, canvas.width, canvas.height);
+        };
+
+        imageElement.onpointerout = () => {
+          imageElement.onpointermove = null;
+          imageElement.onpointerout = null;
+        }
+      }
+    </script>
+  </body>
+</html>
