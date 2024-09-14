@@ -229,8 +229,8 @@
             this.collided = false;
           }
 
-          // this.x += this.dx;
-          // this.y += this.dy;
+          this.x += this.dx;
+          this.y += this.dy;
 
           this.draw();
         }
@@ -276,7 +276,7 @@
       }
       
       function animate() {
-        // document.querySelector('.menu').style.display = 'none';
+        document.querySelector('.menu').style.display = 'none';
 
         context.clearRect(0, 0, window.innerWidth, window.innerHeight);
         rect.update();
@@ -289,7 +289,7 @@
       }
 
       document.addEventListener('DOMContentLoaded', () => {
-        // document.getElementById('start').addEventListener('click', animate);
+        document.getElementById('start').addEventListener('click', animate);
       });
 
       animate();
@@ -299,11 +299,11 @@
       Score: 0
     </div>
 
-    <!-- <div class="menu">
+    <div class="menu">
       <div class="items">
         <p>Ball Game!</p>
         <button id="start">Start</button>
       </div>
-    </div> -->
+    </div>
   </body>
 </html>
