@@ -6,7 +6,7 @@
   fill="rgba(0, 0, 0, 0.5)"
 >
   <style>
-    #windmill-head {
+    #windwill-head {
       animation-name: rotate;
       animation-duration: 4s;
       animation-iteration-count: infinite;

@@ -7,7 +7,7 @@
   stroke="black"
   stroke-width="10"
 >
-  <circle cy="-40" r="20" r="2"/>
+  <circle cy="-40" cx="0" r="20"/>
 
   <path
     d="M -50,70 C -50 -20 50 -20 50 70 Z"
