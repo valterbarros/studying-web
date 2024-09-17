@@ -1,0 +1,20 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="200"
+  height="200"
+  viewBox="-100 -100 200 200"
+>
+  <defs>
+    <g id="tree">
+      <polygon points="-10,0 10,0 0,-50" fill="#38755b"/>
+      <line x1="0" x2="0" y1="0" y2="10" stroke="#778074"/>
+    </g>
+  </defs>
+  <rect width="200" height="200" x="-100" y="-100" fill="#F1DBC3"/>
+  <circle cx="0" cy="340" r="350" fill="#F8F4E8"/>
+
+  <use href="#tree"/>
+  <use href="#tree" x="-60" y="0" transform="scale(1.2)"/>
+  <use href="#tree" x="50" y="10" transform="scale(1.2)"/>
+  <use href="#tree" x="-50" y="100" transform="scale(0.8)"/>
+</svg>

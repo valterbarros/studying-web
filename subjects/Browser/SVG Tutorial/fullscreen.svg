@@ -1,0 +1,35 @@
+<svg
+  width="50"
+  height="50"
+  viewBox="-25 -25 50 50"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <style>
+    .rect {
+      fill: none;
+      stroke: black;
+      stroke-width: 3px;
+      stroke-linecap: round;
+    }
+  </style>
+
+  <path d="
+    M -15, -15
+    H -5
+    M -15, -15
+    V -5
+    M -15, 15
+    H -5
+    M -15, 15
+    V 5
+    M 15, 15
+    H 5
+    M 15, 15
+    V 5
+    M 15, -15
+    H 5
+    M 15, -15
+    V -5
+  "
+  class="rect"/>
+</svg>

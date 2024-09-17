@@ -1,0 +1,16 @@
+<svg width="200" height="200" viewBox="-100 -100 200 200" xmlns="http://www.w3.org/2000/svg">
+  <circle
+    cx="0"
+    cy="0"
+    r="90"
+    width="40"
+    height="35"
+    fill="none"
+    stroke="#000"
+    stroke-linecap="round"
+    stroke-width="2"
+    pathLength="90"
+    stroke-dasharray="2 1"
+    stroke-dashoffset="0"
+  />
+</svg>

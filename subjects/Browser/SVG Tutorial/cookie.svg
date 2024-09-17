@@ -1,0 +1,39 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .head {
+      fill: #cd803d;
+    }
+    
+    .eye {
+      fill: white;
+    }
+    
+    .mouth {
+      fill: none;
+      stroke: white;
+      stroke-width: 2px;
+    }
+    
+    .limb {
+      stroke: #cd803d;
+      stroke-width: 35px;
+      stroke-linecap: round;
+    }
+  </style>
+  <circle cx="100" cy="40" r="30" class="head" fill="#cd803d"/>
+
+  <circle class="eye" cx="90" cy="35" r="3" />
+  <circle class="eye" cx="110" cy="35" r="3" />
+
+  <rect
+    class="mouth"
+    x="90"
+    y="50"
+    width="20"
+    height="5"
+    rx="2"
+  />
+  <line class="limb" x1="50" y1="80" x2="150" y2="80"/>
+  <line class="limb" x1="100" y1="80" x2="69" y2="170"/>
+  <line class="limb" x1="100" y1="80" x2="140" y2="170"/>
+</svg>
