@@ -2,9 +2,8 @@
   <style>
     .sleigh {
       offset-path: url(#run);
-      /* offset-path: padding-box; */
       offset-distance: 30%;
-      animation: way 5s linear;
+      animation: way 5s linear infinite;
     }
 
     @keyframes way {

@@ -4,8 +4,8 @@
       transform-origin: center 30%;
     }
 
-    .bell:hover,
-    .bell:hover .bell-tongue {
+    .bell,
+    .bell .bell-tongue {
       animation-duration: 0.5s;
       animation-delay: -0.25s;
       animation-iteration-count: infinite;
