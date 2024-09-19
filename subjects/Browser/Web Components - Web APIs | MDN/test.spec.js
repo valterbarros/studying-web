@@ -1,3 +1,5 @@
+import { flushPromises } from "../../../utils/flush-promises";
+
 const red = 'rgb(255, 0, 0)';
 
 customElements.define('x-element', class extends HTMLElement {
@@ -28,6 +30,8 @@ customElements.define('x-element', class extends HTMLElement {
 });
 
 customElements.define('x-input', class extends HTMLElement {
+  assignedNodesCount = 0;
+
   static get formAssociated() {
     return true;
   }
@@ -38,9 +42,35 @@ customElements.define('x-input', class extends HTMLElement {
     this._internals = this.attachInternals();
 
   }
-  
+
   connectedCallback() {
-    this.attachShadow({ mode: 'open' });
+    const shadowRoot = this.attachShadow({ mode: 'open' });
+
+    shadowRoot.innerHTML = `
+      <style>
+        :host(:invalid) input {
+          border: 1px solid ${red};
+        }
+      </style>
+
+      <slot name="input">
+        <input type="text" />
+      </slot>
+    `;
+
+    shadowRoot.querySelector('input').addEventListener('input', (e) => {
+      console.log('input', e.target.value);
+      
+      this._internals.setFormValue(e.target.value);
+    });
+
+    const slot = shadowRoot.querySelector('slot');
+
+    slot.addEventListener('slotchange', (e) => {
+      let nodes = slot.assignedNodes();
+
+      this.assignedNodesCount = nodes.length;
+    });
   }
 });
 
@@ -53,8 +83,7 @@ describe('::state', () => {
   });
 });
 
-// TODO: not working
-describe.skip('AttachInternals', () => {
+describe('AttachInternals', () => {
   it('should be possible to use custom element integrated with form', () => {
     const el = document.createElement('x-input');
     const form = document.createElement('form');
@@ -70,6 +99,8 @@ describe.skip('AttachInternals', () => {
     const form = document.createElement('form');
 
     const el = document.createElement('x-input');
+    // Setting name as .name doesnt not work
+    el.setAttribute('name', 'data');
     form.append(el);
 
     const input = document.createElement('input')
@@ -79,14 +110,35 @@ describe.skip('AttachInternals', () => {
 
     document.body.append(form);
 
-    el._internals.setFormValue('123');
+    el._internals.setFormValue('456');
 
     const fd = new FormData(form);
     
     const data = {};
     fd.forEach((value, key) => data[key] = value);
 
-    await vi.waitFor(() => expect(data).toHaveProperty('12322'));
+    await vi.waitFor(() => expect(data).toHaveProperty('data'));
+  });
+
+  it.only('should be possible to set validity state', async () => {
+    const form = document.createElement('form');
+
+    const el = document.createElement('x-input');
+    // Setting name as .name doesnt not work
+    el.setAttribute('name', 'data');
+    form.append(el);
+
+    const input = document.createElement('input')
+    input.value = 123
+    input.name = 'nome'
+    form.append(input)
+
+    document.body.append(form);
+
+    el._internals.setValidity({ valueMissing: true }, 'Error');
+
+    expect(form.checkValidity()).toBe(false);
+    expect(el.matches(':invalid')).toBe(true);
   });
 });
 
@@ -105,5 +157,27 @@ describe('::part', () => {
     document.body.append(div);
 
     expect(getComputedStyle(el.para).color).toBe(red);
+  });
+});
+
+describe('slotchange', () => {
+  it('should return slots on change', async () => {
+    document.body.innerHTML = `
+      <x-input>
+        <input slot="input" type="text" />
+      </x-input>
+    `;
+
+    await flushPromises();
+
+    const xInput = document.querySelector('x-input');
+    
+    expect(xInput.assignedNodesCount).toBe(1);
+    
+    const slotInput = document.querySelector('[slot="input"]');
+    
+    slotInput.removeAttribute('slot');
+
+    await vi.waitFor(() => expect(xInput.assignedNodesCount).toBe(0));
   });
 });
