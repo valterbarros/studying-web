@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable</title>
+    <style>
+      .container {
+        background-color: #333;
+        color: white;
+        padding: 2rem;
+        margin-bottom: 1rem;
+      }
+      .draggable {
+        width: 60%;
+        padding: 1rem;
+        background-color: white;
+        color: black;
+        border: 1px solid grey;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <p class="draggable" draggable="true">1</p>
+      <p class="draggable" draggable="true">2</p>
+      <p class="draggable" draggable="true">3</p>
+    </div>
+
+    <div class="container">
+      <p class="draggable" draggable="true">4</p>
+      <p class="draggable" draggable="true">5</p>
+      <p class="draggable" draggable="true">6</p>
+    </div>
+
+    <script>
+      document.addEventListener('dragstart', (e) => {
+        if (e.target.matches('.draggable')) {
+          e.target.classList.add('dragging')
+        }
+      })
+
+      document.addEventListener('dragend', (e) => {
+        if (e.target.matches('.draggable')) {
+          e.target.classList.remove('dragging')
+        }
+      });
+
+      function getDragAfterElement(container, y) {
+        const draggings = [...container.querySelectorAll('.draggable:not(.dragging)')];
+
+        return draggings.reduce((closest, child) => {
+          const { top, height } = child.getBoundingClientRect();
+
+          const offset = y - top - height / 2;
+
+          if (offset < 0 && offset > closest.offset) {
+            return { offset, element: child }
+          }
+
+          return closest;
+        }, { offset: Number.NEGATIVE_INFINITY, element: null })?.element;
+      }
+
+      document.addEventListener('dragover', (e) => {
+        console.log('over', e.target);
+        e.preventDefault();
+        
+        if (e.target.matches('.container')) {
+
+          const afterElement = getDragAfterElement(e.target, e.clientY);
+          const dragging = document.querySelector('.dragging');
+
+          if (!afterElement) {
+            e.target.append(dragging);
+          } else {
+            e.target.insertBefore(dragging, afterElement);
+          }
+        } else {
+          e.stopImmediatePropagation();
+          e.stopPropagation();
+        }
+      });
+    </script>
+  </body>
+</html>

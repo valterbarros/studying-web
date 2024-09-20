@@ -11,6 +11,7 @@ const PORT = process.env.PORT || 5500;
 app.use(cors())
 
 app.use(express.static('public'));
+app.use('/browser', express.static('subjects/Browser'));
 
 app.post("/posti", (request,response) => {
   const status = {
