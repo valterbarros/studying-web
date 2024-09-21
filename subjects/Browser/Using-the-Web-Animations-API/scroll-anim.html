@@ -8,31 +8,46 @@
     <style>
       body {
         height: calc(100vh * 2);
-        --scroll-y: 0;
+        padding: 0;
+        margin: 0;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       #animateEl {
-        width: 600px;
-        aspect-ratio: 16/9;
+        width: 10vw;
+        height: 400px;
         background-color: #333;
-        margin-top: 30vh;
+        animation: scale linear;
+        position: sticky;
+        top: 0;
+      }
+
+      @keyframes scale {
+        100% {
+          width: calc(100vw - 1rem);
+        }
       }
     </style>
   </head>
   <body>
-    <button id="finish">Finish</button>
-
     <div id="animateEl"></div>
 
     <script>
       const keyFrames = [
         { transform: 'scale(1)'},
-        { transform: `scale(3)`}
+        { transform: 'scale(20)' }
       ];
+      // const keyFrames = [
+      //   { width: '10vw'},
+      //   { width: 'calc(100vw - 1rem)' }
+      // ];
 
       const animationObject = document.getElementById('animateEl').animate(keyFrames, {
         duration: 3000,
-        iterations: 100,
+        iterations: 1,
         fill: 'forwards'
       });
 
@@ -51,23 +66,31 @@
           return (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
       }
 
+      let isFinished = false;
+      
+      animationObject.onfinish = () => {
+        console.log('finish');
+        
+        let isFinished = true;
+        animationObject.commitStyles();
+      }
+
       document.addEventListener('scroll', (e) => {
+        if (isFinished) return;
+
         const percentTime = parseInt(getScrollPercent()) / 100 * 3000;
 
-        if (percentTime !== animationObject.currentTime) {
-          // animationObject.currentTime = percentTime;
-        }
+        animationObject.currentTime = percentTime;
 
         console.log(percentTime);
 
-        animationObject.play();
+        // animationObject.play();
         // animationObject.playbackRate -= 0.9;
         // animationObject.commitStyles();
       }, { passive: true });
 
       document.addEventListener('scrollend', (e) => {
-        animationObject.pause();
-        
+        animationObject.pause();        
       })
     </script>
   </body>
