@@ -34,17 +34,37 @@
     </div>
 
     <script>
+      // document.addEventListener('drag', (e) => {
+      //   console.log('drag');
+      // });
+
+      // document.addEventListener('dragenter', (e) => {
+      //   console.log('dragenter');
+      // });
+
+      // document.addEventListener('dragleave', (e) => {
+      //   console.log('dragleave');
+      // });
+
+      // target
+
       document.addEventListener('dragstart', (e) => {
+        e.dataTransfer.effectAllowed = "move";
+
         if (e.target.matches('.draggable')) {
+          e.dataTransfer.setData('text/plain', 'text');
           e.target.classList.add('dragging')
         }
-      })
+      });
 
       document.addEventListener('dragend', (e) => {
+        console.log('is success? ', e.dataTransfer.dropEffect == 'none' ? 'no' : 'yes');
         if (e.target.matches('.draggable')) {
           e.target.classList.remove('dragging')
         }
       });
+
+      // end target
 
       function getDragAfterElement(container, y) {
         const draggings = [...container.querySelectorAll('.draggable:not(.dragging)')];
@@ -53,6 +73,7 @@
           const { top, height } = child.getBoundingClientRect();
 
           const offset = y - top - height / 2;
+          
 
           if (offset < 0 && offset > closest.offset) {
             return { offset, element: child }
@@ -62,23 +83,34 @@
         }, { offset: Number.NEGATIVE_INFINITY, element: null })?.element;
       }
 
-      document.addEventListener('dragover', (e) => {
-        console.log('over', e.target);
-        e.preventDefault();
-        
-        if (e.target.matches('.container')) {
+      // drop target
+      document.querySelectorAll('.container').forEach((cont) => {
+        cont.addEventListener('dragover', (e) => {
+          console.log(e);
+          
+          e.preventDefault();
 
-          const afterElement = getDragAfterElement(e.target, e.clientY);
+          e.dataTransfer.dropEffect = "move";
+
+          const afterElement = getDragAfterElement(e.currentTarget, e.clientY);
           const dragging = document.querySelector('.dragging');
 
           if (!afterElement) {
-            e.target.append(dragging);
+            e.currentTarget.append(dragging);
           } else {
-            e.target.insertBefore(dragging, afterElement);
+            e.currentTarget.insertBefore(dragging, afterElement);
           }
-        } else {
-          e.stopImmediatePropagation();
-          e.stopPropagation();
+        });
+      });
+
+      // drop target
+      document.addEventListener('drop', (e) => {
+        if (e.target.matches('.container')) {
+          console.log(e.dataTransfer.items[0].type);
+          
+          console.log('dataTransfer', e.dataTransfer.getData('text/plain'));
+
+          e.preventDefault();
         }
       });
     </script>

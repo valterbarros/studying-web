@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      #dropzone {
+        border: 5px solid blue;
+        width: 200px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="dropzone">
+      <p>Drag one or more files to this <i>dropzone</i></p>
+    </div>
+
+    <img id="image" src="" alt="">
+    <script>
+      const dropzone = document.querySelector('#dropzone');
+
+      dropzone.addEventListener('dragover', (e) => {
+        console.log("File(s) in drop zone");
+        e.preventDefault();
+      });
+
+      dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+
+        const parseFile = async (entry) => {
+          const img = new Image();
+          img.src = URL.createObjectURL(await entry.getFile());
+          document.body.append(img)
+        } 
+
+        [...e.dataTransfer.items].forEach(async (item) => {
+          if (item.kind === 'file') {
+            const entry = await item.getAsFileSystemHandle();
+
+            if (entry.kind === 'file') {
+              await parseFile(entry);
+            }
+
+            if (entry.kind === 'directory') {
+              for await (const handle of entry.values()) {
+                await parseFile(handle);
+              }
+            }
+          }
+        })
+      });
+    </script>
+  </body>
+</html>

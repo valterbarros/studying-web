@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      #animateEl {
+        width: 600px;
+        aspect-ratio: 16/9;
+        background-color: #333;
+      }
+
+      #cssAnim {
+        animation: identifier 1s 1000 forwards;
+        width: 600px;
+        aspect-ratio: 16/9;
+        background-color: red;
+      }
+
+      @keyframes identifier {
+        0% {
+          transform: translateX(-100px);
+        }
+
+        100% {
+          transform: translateX(100px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="finish">Finish</button>
+
+    <div id="animateEl"></div>
+
+    <div id="cssAnim"></div>
+
+    <script>
+      const keyFrames = [
+        { transform: 'translateX(-100%)'},
+        { transform: `translateX(${window.innerWidth - 100}px)`}
+      ];
+
+      const timing = {
+        duration: 3000,
+        fill: 'both',
+        iterations: 1000
+      };
+
+      const animationObject = document.getElementById('animateEl').animate(keyFrames, timing);
+
+      let timeId;
+
+      animationObject.onfinish = () => console.log('finish')
+
+      document.addEventListener('click', (e) => {
+        if (e.target.matches('button')) return;
+
+        console.log(animationObject.effect.getComputedTiming());
+        console.log(animationObject.effect.getTiming());
+
+        console.log(animationObject.currentTime);
+
+        if (animationObject.playbackRate > 0.4) {
+          document.getAnimations().forEach((anim) => {
+            anim.updatePlaybackRate(anim.playbackRate * 0.9);
+          });
+        }
+      });
+
+      document.addEventListener('dblclick', () => {
+        animationObject.play();
+
+        animationObject.effect.updateTiming({ direction: 'reverse' });
+      });
+
+      document.querySelector('#finish').addEventListener('click', () => {
+        document.getAnimations().forEach((anim) => {
+          anim.commitStyles();
+          anim.finish();
+        });
+      });
+    </script>
+  </body>
+</html>

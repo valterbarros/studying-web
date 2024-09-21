@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      body {
+        height: calc(100vh * 2);
+        --scroll-y: 0;
+      }
+
+      #animateEl {
+        width: 600px;
+        aspect-ratio: 16/9;
+        background-color: #333;
+        margin-top: 30vh;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="finish">Finish</button>
+
+    <div id="animateEl"></div>
+
+    <script>
+      const keyFrames = [
+        { transform: 'scale(1)'},
+        { transform: `scale(3)`}
+      ];
+
+      const animationObject = document.getElementById('animateEl').animate(keyFrames, {
+        duration: 3000,
+        iterations: 100,
+        fill: 'forwards'
+      });
+
+      animationObject.pause();
+
+      let isScrolling = false;
+      let timeId;
+
+      let velocity = 0;
+
+      function getScrollPercent() {
+          var h = document.documentElement, 
+              b = document.body,
+              st = 'scrollTop',
+              sh = 'scrollHeight';
+          return (h[st]||b[st]) / ((h[sh]||b[sh]) - h.clientHeight) * 100;
+      }
+
+      document.addEventListener('scroll', (e) => {
+        const percentTime = parseInt(getScrollPercent()) / 100 * 3000;
+
+        if (percentTime !== animationObject.currentTime) {
+          // animationObject.currentTime = percentTime;
+        }
+
+        console.log(percentTime);
+
+        animationObject.play();
+        // animationObject.playbackRate -= 0.9;
+        // animationObject.commitStyles();
+      }, { passive: true });
+
+      document.addEventListener('scrollend', (e) => {
+        animationObject.pause();
+        
+      })
+    </script>
+  </body>
+</html>
