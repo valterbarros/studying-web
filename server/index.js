@@ -1,6 +1,12 @@
 import express from 'express';
 import cors from 'cors';
 import { WebSocketServer } from 'ws';
+import path, {dirname} from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 
@@ -11,7 +17,63 @@ const PORT = process.env.PORT || 5500;
 app.use(cors())
 
 app.use(express.static('public'));
-app.use('/browser', express.static('subjects/Browser'));
+
+function getHtmlFiles(dir, baseUrl) {
+  let htmlFiles = [];
+  
+  const items = fs.readdirSync(dir, { withFileTypes: true });
+
+  items.forEach(item => {
+      const fullPath = path.join(dir, item.name);
+      const relativePath = path.join(baseUrl, item.name);
+
+      if (item.isDirectory()) {
+          // Recursively get .html files in subdirectories
+          htmlFiles = htmlFiles.concat(getHtmlFiles(fullPath, relativePath));
+      } else if (item.isFile() && item.name.endsWith('.html')) {
+          // Add the file path if it's an .html file
+          htmlFiles.push(relativePath);
+      }
+  });
+
+  return htmlFiles;
+}
+
+// Serve the index.html file
+app.get('/', (req, res) => {
+  const browserDir = path.join(__dirname, '..', 'subjects', 'Browser');
+  
+  // Get all .html files recursively from the Browser directory
+  const htmlFiles = getHtmlFiles(browserDir, '/subjects/Browser');
+
+  // Generate HTML links for each .html file
+  let fileLinks = htmlFiles.map(file => 
+      `<li><a href="${file}">${path.normalize(file)}</a></li>`
+  ).join('');
+
+  // Serve index.html with the list of links
+  let htmlContent = `
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>HTML Files</title>
+      </head>
+      <body>
+          <h1>List of HTML files in /subjects/Browser</h1>
+          <ul>
+              ${fileLinks}
+          </ul>
+      </body>
+      </html>
+  `;
+
+  res.send(htmlContent);
+});
+
+// Serve static files in subjects/Browser
+app.use('/subjects/Browser', express.static(path.join(__dirname, '..', 'subjects', 'Browser')));
 
 app.post("/posti", (request,response) => {
   const status = {
