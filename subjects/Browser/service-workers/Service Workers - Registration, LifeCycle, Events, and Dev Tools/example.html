@@ -21,11 +21,11 @@
 
       const registration = await navigator.serviceWorker.register('./service-worker.js');
       // registration.
-      console.log(registration.active, registration.installing, registration.waiting);
+      // console.log(registration.active, registration.installing, registration.waiting);
 
       // Get service worker when that is active/ready
       navigator.serviceWorker.ready.then((cont) => {
-        console.log('ready', cont.active);
+        // console.log('ready', cont.active);
       });
 
       // Get all registrations
@@ -53,5 +53,24 @@
 
     <button id="button">Button</button>
     <button id="unregister">Unregister</button>
+
+    <button id="createImageBtn">Create Image</button>
+    <br>
+    <img id="generatedImage" alt="Programmatically Created Image" style="display:none; margin-top: 20px;"/>
+
+    <script>    
+      document.getElementById('createImageBtn').addEventListener('click', () => {
+        // Create an image element
+        const img = document.getElementById('generatedImage');
+
+        // Set the source of the image (you can use a URL or a data URL)
+        img.src = './salluti.jpeg'; // Example image
+
+        // Optionally, you can manipulate the image style, size, etc.
+        img.style.display = 'block'; // Show the image if hidden
+        img.style.width = '300px'; // Set the width
+        img.style.height = '300px'; // Set the height
+      });
+    </script>
   </body>
 </html>
