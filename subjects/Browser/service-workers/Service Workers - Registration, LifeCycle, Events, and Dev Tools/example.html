@@ -39,24 +39,23 @@
       })
 
       document.querySelector('#button').addEventListener('click', () => {
-        console.log('click');
-        
-        registration.active.postMessage('hey');
-
-
-        // longTask();
+        registration.active.postMessage({ name: 'broadcast', data: 'data' });
       });
+
+      navigator.serviceWorker.addEventListener('message', () => {
+        console.log('service message');
+      })
     </script>
   </head>
   <body>
-    hey jude
-
     <button id="button">Button</button>
     <button id="unregister">Unregister</button>
 
     <button id="createImageBtn">Create Image</button>
     <br>
     <img id="generatedImage" alt="Programmatically Created Image" style="display:none; margin-top: 20px;"/>
+
+    <img src="./salluti.jpeg" alt="">
 
     <script>    
       document.getElementById('createImageBtn').addEventListener('click', () => {
