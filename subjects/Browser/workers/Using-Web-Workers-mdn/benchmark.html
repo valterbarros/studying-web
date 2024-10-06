@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    div {
+      /* animation: moveIt infinite 1s linear; */
+      /* position: absolute; */
+    }
+    @keyframes moveIt {
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    body {
+      background: #333;
+      max-height: 100vh;
+      overflow: auto;
+    }
+
+    .scroller {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <button id="start">start</button>
+
+  <div class="scroller"></div>
+
+  <script>
+    // Cause the fetchies animation is a little bit junky
+    function seed() {
+      for (let index = 0; index < 100; index++) {
+        const div = document.createElement('div');
+        div.textContent = '123';
+
+        document.querySelector('.scroller').append(div);
+      }
+    }
+    
+    seed();
+
+    window.addEventListener('scroll', (e) => {
+      const el = document.documentElement;
+      console.log('hey', el.scrollTop + el.clientHeight, el.scrollHeight);
+
+      if (el.scrollTop + el.clientHeight - el.scrollHeight < 200) {
+        seed();
+      }
+    }, true);
+
+    document.getElementById('start').addEventListener('click', () => {
+      console.log('click');
+      
+      // const worker = new Worker('worker.js');
+      // worker.postMessage('Hello World');
+      // worker.onmessage = (event) => {
+      //   console.log(event.data);
+      // }
+      for (let index = 0; index < 11; index++) {
+        const fetchi = fetch('https://raw.githubusercontent.com/json-iterator/test-data/refs/heads/master/large-file.json');
+        console.log(fetchi);
+        fetchi.then((response) => {
+          return response.json();
+        }).then(() => {
+          console.log('done');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

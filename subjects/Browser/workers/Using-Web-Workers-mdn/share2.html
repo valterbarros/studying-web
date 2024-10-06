@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  Worker 2
+
+  open to inspect shared worker: chrome://inspect/#workers
+
+  <button id="post">Click 2</button>
+
+  <script>
+    const shared = new SharedWorker('./sharedv1.js');
+
+    shared.port.onmessage = (e) => {
+      console.log('hellow', e.data);  
+    }
+
+    shared.port.start();
+
+    shared.onerror = console.log
+
+    const button = document.querySelector('button');
+
+    button.onclick = () => {
+      console.log('post');
+      
+      shared.port.postMessage('message from main');
+    }
+  </script>
+</body>
+</html>

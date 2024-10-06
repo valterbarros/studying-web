@@ -94,6 +94,12 @@ app.get("/digits", (request, response) => {
   response.write(`id: 1 \n\n`);
 });
 
+app.get("/long", (request, response) => {
+  setTimeout(() => {
+    response.send('123');
+  }, 2000)
+});
+
 app.listen(PORT, () => {
   console.log("Server is Listening on PORT:", PORT);
 });

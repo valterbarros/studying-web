@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    Workers
+
+    <button id="terminate">terminate</button>
+
+    <script>
+      const worker = new Worker('./worker.js');
+
+      worker.postMessage({ message: 'message' });
+
+      worker.addEventListener('message', (e) => {
+        console.log(e.data, 'back');
+      });
+
+      document.getElementById('terminate').addEventListener('click', () => {
+        worker.terminate();
+      });
+    </script>
+  </body>
+</html>

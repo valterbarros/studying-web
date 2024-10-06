@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    Worker 1
+
+    open to inspect shared worker: chrome://inspect/#workers
+    
+    <button id="post">Click 1</button>
+    <script>
+      const shared = new SharedWorker('./sharedv1.js');
+
+      shared.port.start();
+
+      shared.port.addEventListener('message', (e) => {
+        console.log('message from worker', e.data);  
+      });
+
+      shared.onerror = console.log
+
+      const button = document.querySelector('button');
+
+      button.onclick = () => {
+        shared.port.postMessage(1);
+      }
+    </script>
+  </body>
+</html>
