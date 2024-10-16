@@ -29,6 +29,7 @@
   </head>
   <body>
     <main>
+      <button id="get">Get public key credentials</button>
       <form action="" class="formi">
         <label>
           Usuario:
@@ -44,6 +45,48 @@
     </main>
 
     <script>
+      let rawId;
+      document.querySelector("#get").addEventListener("click", async () => {
+        // sample arguments for login
+        /**
+         * @type {PublicKeyCredentialRequestOptions}
+        */
+        const getCredentialDefaultArgs = {
+          publicKey: {
+            timeout: 60000,
+            // allowCredentials: [newCredential] // see below
+            // must be a cryptographically random number sent from a server
+            challenge: new Uint8Array([
+              121,
+              80,
+              104,
+              113,
+              218,238,238,185,148,195,194,21,103,101,38,34,227,243,171,59,120,46,213,111,129,38,226,166,1,125,
+              116,
+              80
+            ]).buffer,
+            // challenge: new Uint8Array([
+            //   0x79, 0x50, 0x68, 0x71, 0xda, 0xee, 0xee, 0xb9, 0x94, 0xc3, 0xc2, 0x15,
+            //   0x67, 0x65, 0x26, 0x22, 0xe3, 0xf3, 0xab, 0x3b, 0x78, 0x2e, 0xd5, 0x6f,
+            //   0x81, 0x26, 0xe2, 0xa6, 0x01, 0x7d, 0x74, 0x50,
+            // ]).buffer,
+            allowCredentials: [
+              {
+                id: rawId,
+                transports: ["usb", "nfc", "ble"],
+                type: "public-key",
+              },
+            ],
+          },
+        };
+        
+        console.log(rawId);
+
+        // Pass
+        // register / create a new credential
+        console.log(await navigator.credentials.get(getCredentialDefaultArgs));
+      });
+
       document.querySelector("form").addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -130,6 +173,7 @@
                 },
               ];
               getCredentialDefaultArgs.publicKey.allowCredentials = idList;
+              rawId = cred.rawId;
               return navigator.credentials.get(getCredentialDefaultArgs);
             })
             .then((assertion) => {
