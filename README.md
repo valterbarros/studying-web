@@ -603,3 +603,5 @@ screen wake API
   - [Permissions-Policy: screen-wake-lock](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Permissions-Policy/screen-wake-lock) 
   - [WakeLockSentinel.release()](https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel/release) 
   - [navigator.wakeLock.request()](https://developer.mozilla.org/en-US/docs/Web/API/WakeLock/request)
+
+Total all: 1783m
