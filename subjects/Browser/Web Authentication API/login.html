@@ -45,6 +45,16 @@
     </main>
 
     <script>
+      function stringToBase64URL (str) {
+        return btoa(str).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '');
+      }
+
+      const savedId = 'DuEyvKxDSNjUJeDUsZyJOEh-biwc0y_dv-HEJ2XliHw';
+
+      function textToBuffer (text) {
+        return new TextEncoder().encode(stringToBase64URL(text));
+      }
+
       let rawId;
       document.querySelector("#get").addEventListener("click", async () => {
         // sample arguments for login
@@ -72,7 +82,7 @@
             // ]).buffer,
             allowCredentials: [
               {
-                id: rawId,
+                id: rawId || textToBuffer(savedId),
                 transports: ["usb", "nfc", "ble"],
                 type: "public-key",
               },
@@ -123,12 +133,8 @@
                 name: "valterinside@gmail.com",
                 displayName: "Valter Barros",
               },
-              pubKeyCredParams: [
-                {
-                  type: "public-key",
-                  alg: -7,
-                },
-              ],
+              pubKeyCredParams: [{alg: -7, type: "public-key"},{alg: -257, type: "public-key"}],
+              // hints: ['security-key'],
               attestation: "direct",
               timeout: 60000,
               challenge: new Uint8Array([
@@ -137,6 +143,10 @@
                 0x1a, 0x98, 0x6a, 0x73, 0x71, 0x9d, 0x43, 0x48, 0xd5, 0xa7, 0x6a, 0x15,
                 0x7e, 0x38, 0x94, 0x52, 0x77, 0x97, 0x0f, 0xef,
               ]).buffer,
+              authenticatorSelection: {
+                // authenticatorAttachment: "platform",
+                // requireResidentKey: true,
+              }
             },
           };
 
