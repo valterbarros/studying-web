@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .cont {
+      margin: 0 auto;
+      border: 1px solid green;
+      padding: 1rem;
+      width: max-content;
+    }
+
+    [popovertarget] {
+      anchor-name: --anchor-el;
+    }
+
+    [popover] {
+      left: 0;
+      position-anchor: --anchor-el;
+      top: anchor(bottom);
+      left: anchor(right);
+      position: absolute;
+      transition:
+        opacity 0.7s,
+        transform 0.7s,
+        overlay 0.7s allow-discrete,
+        display 0.7s allow-discrete;
+    }
+
+    @keyframes show {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    :popover-open {
+      width: 200px;
+      height: 100px;
+      margin: 0;
+      animation: show linear 300ms;
+      /* opacity: 1; */
+    }
+
+    /* Use it with trnasition or keyframes */
+    /* @starting-style {
+      [popover]:popover-open {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+    } */
+
+
+    [popover]::backdrop {
+      background-color: rgb(0 0 0 / 0%);
+      transition:
+        display 0.7s allow-discrete,
+        overlay 0.7s allow-discrete,
+        background-color 0.7s;
+      /* Equivalent to
+      transition: all 0.7s allow-discrete; */
+    }
+
+    button:focus {
+      outline: 1px solid red;
+    }
+  </style>
+</head>
+<body>
+  Auto behavior
+
+  <div class="cont">
+    <button popovertarget="my-popover"> 
+      Open
+    </button>
+  
+    <input id="action" />
+  
+    <div
+      open
+      id="my-popover"
+      popover
+      anchor="action"
+    >
+      Hey jude
+    </div>
+  </div>
+  Nested behavior
+  <!-- Multi -->
+  <div class="cont">
+    <input id="action" />
+
+    <button id="parent">Open parent!</button>
+
+    <div
+      id="my-popover-manual"
+      popover
+    >
+      Hey jude123
+      <button popovertarget="my-popover-nested" autofocus> 
+        Open
+      </button>
+      <a href="">abc</a>
+    </div>
+
+    <div popover id="my-popover-nested">
+      Nested
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('#parent').addEventListener('click', () => {
+      document.querySelector('#my-popover-manual').showPopover();
+    });
+  </script>
+</body>
+</html>
