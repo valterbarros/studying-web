@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      const con = await navigator.mediaDevices.getSupportedConstraints()
+      console.log(con);
+      
+      document.open();
+      document.write('<strong>Features Supported:</strong>');
+      document.write('<ul>')
+        for (const element in con) {
+          document.write(`<li>${element}</li>`);
+        }
+        document.write('</ul>')
+        document.close();
+    </script>
+  </body>
+</html>

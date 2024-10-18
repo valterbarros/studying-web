@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <script type="module">
+      await navigator.mediaDevices.getUserMedia({video: true, audio: true});
+      const p = await navigator.permissions.query({ name: 'camera' })
+
+      const devices = await navigator.mediaDevices.enumerateDevices()
+
+      document.open();
+      document.write('<strong>Devices and capabilities:</strong>');
+      document.write('<ul>')
+        for (const device of devices) {
+          document.write('<ul>')
+            document.write(`<li>${device.kind}: ${device.label} id = ${device.deviceId}</li>`);
+            document.write('<ul>')
+              for (const cap in device?.getCapabilities?.() || {}) {
+                document.write(`<li>${cap}</li>`);
+              }
+            document.write('</ul>')
+          document.write('</ul>')
+        }
+        document.write('</ul>')
+        document.close();
+    </script>
+  </body>
+</html>
