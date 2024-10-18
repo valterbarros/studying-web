@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    div {
+      /* animation: moveIt infinite 1s linear; */
+      /* position: absolute; */
+    }
+    @keyframes moveIt {
+      to {
+        transform: translateY(100%);
+      }
+    }
+
+    body {
+      background: #333;
+      max-height: 100vh;
+      overflow: auto;
+    }
+
+    .scroller {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <button id="start">start</button>
+
+  <p>Try click start and scroll the page you should see some junky scroll</p>
+
+  <input type="color" name="" id="color">
+
+  <div class="scroller"></div>
+
+  <script>
+    // Cause the fetchies animation is a little bit junky
+    function seed() {
+      for (let index = 0; index < 100; index++) {
+        const div = document.createElement('div');
+        div.textContent = Date.now();
+
+        document.querySelector('.scroller').append(div);
+      }
+    }
+    
+    seed();
+
+    window.addEventListener('scroll', (e) => {
+      const el = document.documentElement;
+
+      if (el.scrollTop + el.clientHeight - el.scrollHeight < 200) {
+        seed();
+      }
+    }, true);
+
+    function blockMainThread(duration) {
+      const startTime = Date.now();
+
+      while(Date.now() - startTime < duration) {}
+
+      console.log('finish blocking');
+      
+    }
+
+    document.getElementById('start').addEventListener('click', async function start() {
+      blockMainThread(500);
+      // toggle it
+      // await scheduler.yield();
+      blockMainThread(500);
+    });
+
+    document.getElementById('color').addEventListener('input', function colorChange(e) {
+      document.querySelector('.scroller').style.backgroundColor = e.target.value;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      @keyframes moveIt {
+        to {
+          transform: translateY(1000px);
+        }
+      }
+
+      div {
+        /* animation: moveIt infinite 20s linear; */
+        transition: transform 20s linear;
+        position: absolute;
+      }
+
+      input:checked + div {
+        transform: translateY(1000px);
+      }
+
+      body {
+        max-height: 100vh;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Open devtools at performance tab</h1>
+    <p>In this example I show that css animations is not handled by main thread and even you block main thread it continue running</p>
+    
+    <button id="start">start</button>
+
+    <br>
+    <input type="checkbox" name="" id="">
+    <div>123</div>
+
+    <script>
+      function blockMainThread(duration) {
+        const startTime = Date.now();
+
+        while(Date.now() - startTime < duration) {}
+
+        console.log('finish blocking');
+      }
+
+      window.start = document.getElementById('start');
+      start.addEventListener('click', () => {
+        blockMainThread(5000);
+
+        console.log('finish');
+      });
+    </script>
+  </body>
+</html>
