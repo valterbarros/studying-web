@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="start">start</button>
+    <br>
+    <video id="video" controls></video>
+    <a href="#" download>Download</a>
+
+    <script>
+      document.getElementById('start').addEventListener('click', async () => {
+        const captureStream = await navigator.mediaDevices.getDisplayMedia({
+          video: {
+            displaySurface: "browser",
+            width: 720,
+            // height: 720,
+            aspectRatio: 1.3333,
+          },
+          audio: {
+            suppressLocalAudioPlayback: false,
+          },
+          preferCurrentTab: true,
+          // selfBrowserSurface: "exclude",
+          systemAudio: "include",
+          surfaceSwitching: "include",
+          monitorTypeSurfaces: "include",
+        });
+
+        console.log(captureStream.getTracks()[1]);
+
+        document.query
+        /**
+         * @type {HTMLVideoElement}
+        */
+        const video = document.getElementById('video');
+        video.srcObject = captureStream;
+
+        video.play();
+
+        const recorder = new MediaRecorder(captureStream);
+
+        const recordedChunks = [];
+        recorder.ondataavailable = (e) => {
+          recordedChunks.push(e.data);
+        }
+
+        document.querySelector('[download]').addEventListener('click', (e) => {
+          const blob = new Blob(recordedChunks, {
+            type: "video/webm",
+          });
+          const url = URL.createObjectURL(blob);
+          e.target.href = url;
+          e.target.download = "test.webm";
+          window.URL.revokeObjectURL(url);
+
+          recorder.stop();
+        });
+
+        recorder.start();
+      });
+    </script>
+  </body>
+</html>
