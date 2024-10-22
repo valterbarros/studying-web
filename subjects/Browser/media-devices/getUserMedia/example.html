@@ -9,36 +9,50 @@
     <button id="start">start</button>
     <button id="apply">Apply</button>
     <button id="stop">stop</button>
-    <input type="range" name="" id="framerate" max="250">
+    <input type="range" name="" id="framerate" max="250" value="0">
+    <select name="" id="devide-input">
+      <option value="">Escolha uma opção</option>
+    </select>
 
     <script type="module">
-      async function getDevice() {
-        const devs = await navigator.mediaDevices.getUserMedia({ video: true });
+      async function populateDevice() {
+        const devs = await navigator.mediaDevices.enumerateDevices();
 
-        const [{ id }] = devs.getVideoTracks()
-
-        return id;
+        for (const { label, deviceId } of devs.filter((input) => input.kind === 'videoinput')) {
+          document.getElementById('devide-input').append(new Option(label, deviceId));
+        }
       }
+
+      populateDevice();
 
       /**
        * @type {MediaStream}
        */
       let mediaStream;
+      let video;
       // constraint ->  Browser constraint
       // capabilities -> 
       // settings -> current track's settings
-      document.getElementById('start').addEventListener('click', async () => {
+      document.getElementById('devide-input').addEventListener('change', async () => {
         mediaStream = await navigator.mediaDevices.getUserMedia({
           video: {
-            deviceId: getDevice()
+            deviceId: document.getElementById('devide-input').value
           },
           audio: false
         });
 
-        const video = document.createElement('video')
+        video?.remove?.();
+
+        video = document.createElement('video')
         video.autoplay = true
-        document.body.appendChild(video)
-        video.srcObject = mediaStream;
+        document.body.appendChild(video);
+        document.startViewTransition(() => {
+          video.srcObject = mediaStream;
+        });
+
+        mediaStream.getVideoTracks().forEach(track => {
+          document.getElementById('framerate').value = track.getSettings().saturation;
+        });
       });
 
       document.getElementById('apply').addEventListener('click', async () => {
