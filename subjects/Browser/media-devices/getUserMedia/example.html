@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="start">start</button>
+    <button id="apply">Apply</button>
+    <button id="stop">stop</button>
+    <input type="range" name="" id="framerate" max="250">
+
+    <script type="module">
+      async function getDevice() {
+        const devs = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        const [{ id }] = devs.getVideoTracks()
+
+        return id;
+      }
+
+      /**
+       * @type {MediaStream}
+       */
+      let mediaStream;
+      // constraint ->  Browser constraint
+      // capabilities -> 
+      // settings -> current track's settings
+      document.getElementById('start').addEventListener('click', async () => {
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            deviceId: getDevice()
+          },
+          audio: false
+        });
+
+        const video = document.createElement('video')
+        video.autoplay = true
+        document.body.appendChild(video)
+        video.srcObject = mediaStream;
+      });
+
+      document.getElementById('apply').addEventListener('click', async () => {
+        const videoTrack = mediaStream.getVideoTracks()[0];
+        const cap = videoTrack.getCapabilities();
+
+        console.log(cap);
+
+        /**
+         * @type {MediaTrackCapabilities}
+         */
+        const constraints = {
+          // width: { min: 640, ideal: 1280, },
+          saturation: 240,
+          // frameRate: { min: 30 },
+          // height: { min: 480, ideal: 720 },
+          // advanced: [{ width: 1920, height: 1280 }, { aspectRatio: 1.333 }],
+        };
+
+        videoTrack.applyConstraints(constraints);
+      });
+
+      document.getElementById('stop').addEventListener('click', async () => {
+        mediaStream.getVideoTracks().forEach(track => track.stop());
+      });
+
+      document.getElementById('framerate').addEventListener('change', async (e) => {
+        const videoTrack = mediaStream.getVideoTracks()[0];
+        console.log(e.target.value);
+        
+        const constraints = {
+          // frameRate: { min: e.target.value },
+          saturation: e.target.value
+        };
+        videoTrack.applyConstraints(constraints);
+      });
+    </script>
+  </body>
+</html>

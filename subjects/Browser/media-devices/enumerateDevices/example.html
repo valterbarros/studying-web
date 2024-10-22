@@ -8,7 +8,8 @@
   <body>
     <script type="module">
       await navigator.mediaDevices.getUserMedia({video: true, audio: true});
-      const p = await navigator.permissions.query({ name: 'camera' })
+      // Query and ask for permission
+      const p = await navigator.permissions.query({ name: 'camera' });
 
       const devices = await navigator.mediaDevices.enumerateDevices()
 

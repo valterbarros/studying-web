@@ -32,7 +32,6 @@
 
         console.log(captureStream.getTracks()[1]);
 
-        document.query
         /**
          * @type {HTMLVideoElement}
         */
@@ -53,6 +52,7 @@
             type: "video/webm",
           });
           const url = URL.createObjectURL(blob);
+          video.src = url;
           e.target.href = url;
           e.target.download = "test.webm";
           window.URL.revokeObjectURL(url);
