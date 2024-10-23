@@ -47,17 +47,26 @@
           recordedChunks.push(e.data);
         }
 
-        document.querySelector('[download]').addEventListener('click', (e) => {
+        document.querySelector('[download]').addEventListener('click', async (e) => {
+          recorder.stop();
+
+          await new Promise((resolve) => {
+            recorder.onstop = resolve;
+          });
+
           const blob = new Blob(recordedChunks, {
             type: "video/webm",
           });
+
           const url = URL.createObjectURL(blob);
           video.src = url;
           e.target.href = url;
           e.target.download = "test.webm";
-          window.URL.revokeObjectURL(url);
-
-          recorder.stop();
+          console.log(url);
+          
+          setTimeout(() => {
+            window.URL.revokeObjectURL(url);
+          }, 200);
         });
 
         recorder.start();
