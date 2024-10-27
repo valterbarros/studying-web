@@ -40,7 +40,7 @@ describe('file system api', () => {
       const root = await navigator.storage.getDirectory();
       const area51 = await root.getDirectoryHandle('area51');
   
-      const files = await Array.fromAsync(area51.entries())
+      const files = await Array.fromAsync(area51.entries());
   
       expect(files).toHaveLength(2);
     });

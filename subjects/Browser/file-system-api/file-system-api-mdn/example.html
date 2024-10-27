@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="start">Read File</button>
+    <button id="open">Open</button>
+
+    <script type="module">
+      const worker = new Worker('./file-worker.js');
+
+      worker.onmessage = (event) => {
+        console.log(event.data);
+      };
+
+      document.getElementById('start').addEventListener('click', async () => {
+        worker.postMessage('read-file');
+      });
+
+      document.getElementById('open').addEventListener('click', async () => {
+        const [fileHandle] = await window.showOpenFilePicker();
+        const file = await fileHandle.getFile();
+        console.log(file.name);
+
+        document.body.append('file: ' + file.name);
+      });
+    </script>
+  </body>
+</html>

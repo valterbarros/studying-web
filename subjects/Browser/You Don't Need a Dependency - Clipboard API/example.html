@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Copy and paste</title>
+  </head>
+  <body>
+    <button id="copy">copy</button>
+    <button id="paste">paste text</button>
+    <button id="paste-image">paste image</button>
+    <img id="destination" src="" alt="">
+    <script type="module">
+      const p = await navigator.permissions.query({ name: 'clipboard-write' });
+      console.log('permission', p);
+      
+      document.querySelector('#copy').addEventListener('click', async () => {
+        await navigator.clipboard.writeText('Hello, world!');
+
+        console.log('copy');
+      });
+
+      document.querySelector('#paste').addEventListener('click', async () => {
+        // const text = await navigator.clipboard.readText();
+        // or
+        const contents = await navigator.clipboard.read();
+
+        for (const item of contents) {
+          console.log(await item.getType('text/plain'));
+          
+          const blob = await item.getType('text/plain')
+          console.log('paste text -> ', await blob.text())
+        } 
+      });
+
+      document.querySelector('#paste-image').addEventListener('click', async () => {
+        const contents = await navigator.clipboard.read();
+
+        for (const item of contents) {
+          // TODO: For some reason dont found the image/png from my clipboard on linux
+          // on android it worked well
+          if (!item.types.includes("image/png")) {
+            throw new Error("Clipboard does not contain PNG image data.");
+          }
+
+          const blob = await item.getType("image/png");
+          document.querySelector('#destination').src = URL.createObjectURL(blob);
+        }        
+      })
+    </script>
+  </body>
+</html>
