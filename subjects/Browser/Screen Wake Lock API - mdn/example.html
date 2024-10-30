@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Screen Wake Lock API</title>
+  </head>
+  <body>
+    <p id="statusElem"></p>
+    <button id="release">release</button>
+    <script type="module">
+      // Create a reference for the Wake Lock.
+      let wakeLock = null;
+
+      // create an async function to request a wake lock
+      try {
+        wakeLock = await navigator.wakeLock.request("screen");
+        statusElem.textContent = "Wake Lock is active!";
+      } catch (err) {
+        // The Wake Lock request has failed - usually system related, such as battery.
+        statusElem.textContent = `${err.name}, ${err.message}`;
+      }
+
+      console.log(wakeLock);
+
+      release.onclick = async () => {
+        await wakeLock.release()
+        console.log('released');
+
+        wakeLock = null
+      }
+
+      wakeLock.addEventListener("release", () => {
+        // the wake lock has been released
+        statusElem.textContent = "Wake Lock has been released";
+      });
+    </script>
+  </body>
+</html>

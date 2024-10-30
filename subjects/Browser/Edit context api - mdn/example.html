@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit context study</title>
+  </head>
+
+  <body>
+    <div id="html-editor">
+      text
+    </div>
+
+    <script>
+      // Not fully work because has a lot of work to work this
+      const canvas = document.querySelector("canvas");
+
+      const editContext = new EditContext({
+        text: "<html>\n  <body id=foo>\n    <h1 id='header'>Cool Title</h1>\n    <p class=\"wow\">hello<br/>How are you? test</p>\n  </body>\n</html>",
+      });
+
+      const editorEl = document.getElementById("html-editor");
+
+      editorEl.editContext = editContext;
+
+      editContext.ontextupdate = () => {
+        editorEl.innerText = editContext.text;
+      }
+
+      function updateControlBounds() {
+        const editorBounds = editorEl.getBoundingClientRect();
+        editContext.updateControlBounds(editorBounds);
+      }
+
+      updateControlBounds();
+    </script>
+  </body>
+</html>

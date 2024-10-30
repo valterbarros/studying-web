@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="start">start</button>
+    Page 1
+    <script type="module">
+      const start = document.getElementById('start');
+      start.addEventListener('click', async () => {
+        const permission = await navigator.permissions.query({ name: 'window-management' });
+  
+        if (permission.state !== 'granted') console.log('denied');
+  
+        const { screens } = await window.getScreenDetails();
+        
+
+        const screen = screens[0];
+
+        window.open('./page2.html', '_blank', `left=${screen.availLeft},top=${screen.availTop},width=550,height=700,toolbar=0,resizable=0`)
+      });
+    </script>
+  </body>
+</html>

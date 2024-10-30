@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      :picture-in-picture {
+        anchor-name: --anchor-el;
+      }
+
+      h1 { 
+        position-anchor: --anchor-el;
+        position: absolute;
+        top: anchor(top);
+        left: anchor(right);
+        background: black;
+        color: white;
+        border-radius: 0 50px 50px 0;
+        padding: 1rem;
+        transform: translateX(-100%);
+        transition: all 1s linear;
+        z-index: -50;
+      }
+
+      :picture-in-picture + h1 {
+        transform: translateX(0);
+      }
+    </style>
+  </head>
+  <body>
+    <video controls src="./video.mp4">
+      Not supported
+    </video>
+
+    <h1>Is in picture in picture mode</h1>
+
+    <button id="picture">Picture</button>
+    <button id="leave">Leave</button>
+
+    <script type="module">
+      console.log('picture in picture is enabled', document.pictureInPictureEnabled);
+
+      document.getElementById('picture').addEventListener('click', async () => {
+        const video = document.querySelector('video');
+        video.onenterpictureinpicture = () => {
+          console.log('enter picture in picture');
+        }
+
+        video.onleavepictureinpicture = () => {
+          console.log('leave picture in picture');
+        }
+
+        const wind = await document.querySelector('video').requestPictureInPicture();
+
+        console.log(wind);
+
+        wind.onresize = (e) => {
+          console.log('resize', `width=${e.target.width},height=${e.target.height}`);
+        }
+
+        console.log('in picture');
+
+        
+      });
+      
+      document.getElementById('leave').addEventListener('click', () => {
+        document.exitPictureInPicture();
+        console.log('exit picture in picture');
+      });
+    </script>
+  </body>
+</html>

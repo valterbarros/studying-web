@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+      await navigator.serviceWorker.register('./sw.js');
+    </script>
+  </head>
+  <body>
+    background fetch
+
+    <button id="start">Start Download</button>
+    <button id="abort">Abort all</button>
+    <button id="load"> Load video</button>
+
+    <br>
+
+    Status <p id="statusEl"></p>
+
+    <br>
+
+    <video controls></video>
+
+    <script type="module">
+      const permission = await navigator.permissions.query({ name: 'background-fetch' });
+      // console.log(permission);
+      
+      const monitorBgFetch = (fetch) => {
+        // console.log('bg fetch', fetch);
+      }
+
+      async function checkOngoingFetches() {
+        const reg = await navigator.serviceWorker.ready;
+        
+        const ids = await reg.backgroundFetch.getIds();
+
+        console.log('goin', ids);
+
+        ids.forEach(async (id) => {
+          try {
+            monitorBgFetch(await reg.backgroundFetch.get(id));
+          } catch (err) {
+            console.log('error');
+            
+          }
+        });
+      }
+
+      start.onclick = async () => {
+        const reg = await navigator.serviceWorker.ready;
+  
+        const bgFetch = await reg.backgroundFetch.fetch(
+          `video23-${Date.now()}`,
+          ['./videoplayback.mp4'],
+          {
+            title: 'an example',
+            downloadTotal: 1607451795
+          }
+        );
+  
+        bgFetch.addEventListener('progress', (e) => {
+          console.log('progress', e.target);
+          
+          statusEl.innerHTML = e.target.downloadTotal / e.target.downloaded
+        });
+
+        checkOngoingFetches()
+      }
+
+      abort.onclick = async () => {
+        const reg = await navigator.serviceWorker.ready;
+        const ids = await reg.backgroundFetch.getIds();
+
+        console.log('abort all');
+
+        ids.forEach(async (id) => {
+          const back = await reg.backgroundFetch.get(id)
+          back.abort();
+        });
+      }
+
+      abort.onclick();
+
+      load.onclick = () => {
+        const video = document.querySelector('video');
+        video.src = './videoplayback.mp4';
+      }
+    </script>
+  </body>
+</html>

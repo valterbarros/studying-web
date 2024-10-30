@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    <video controls src="./video.mp4">
+      Not supported
+    </video>
+
+    <button id="full">Full</button>
+
+    <script type="module">
+      document.getElementById('full').addEventListener('click', async () => {
+        await document.querySelector('video').requestFullscreen();
+
+        console.log('in fullscreen');
+
+        setTimeout(() => {
+          document.exitFullscreen();
+          console.log('exit fullscreen');
+          
+        }, 2000);
+      });
+      
+      document.querySelector('video').addEventListener('fullscreenchange', () => {
+        console.log('element fullscreen', document.fullscreenElement)
+        console.log('fullscreen enabled', document.fullscreenEnabled)
+      })
+    </script>
+  </body>
+</html>
