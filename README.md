@@ -14,7 +14,9 @@ run tests:
 ```
 npm install
 
-npm test:browser
+npm run test:browser
+
+npm run server
 npm test:noBrowser
 ```
 
@@ -294,6 +296,7 @@ history of web
 - [JavaScript - MDN Web Docs Glossary: Definitions of Web-related terms](https://developer.mozilla.org/en-US/docs/Glossary/JavaScript) 
 - [A HISTÓRIA COMPLETA: JAVASCRIPT](https://www.youtube.com/watch?v=QM83eQ7Kpbg&t=21s) 
 - [The history of the web (Chrome University 2019)](https://www.youtube.com/watch?v=kNzoswFIU9M&list=PLNYkxOF6rcICgS7eFJrGDhMBwWtdTgzpx&index=2&ab_channel=ChromeforDevelopers)
+- [How browsers work!](https://web.dev/articles/howbrowserswork)
 
 dom
 
@@ -482,9 +485,9 @@ service worker
   - [Service Workers - Messaging between Tabs and Service Workers](https://www.youtube.com/watch?v=ISBjiYYqx6s&list=PLyuRouwmQCjl4iJgjH3i61tkqauM-NTGj&index=8&pp=iAQB) 
   - [Service Workers Simplified with Caching Strategies](https://www.youtube.com/watch?v=q5RLP-CDMvs&list=PLyuRouwmQCjl4iJgjH3i61tkqauM-NTGj&index=14) 
   - [Custom Service Worker Redirects 12](https://www.youtube.com/watch?v=mNkJOghRLsM&list=PLyuRouwmQCjl4iJgjH3i61tkqauM-NTGj&index=15&pp=iAQB) 
-  [Using Web Workers - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) 
-  [The main thread is overworked & underpaid (Chrome Dev Summit)](https://www.youtube.com/watch?v=7Rrv9qFMWNM) 
-  [Cache - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Cache) 
+- [Using Web Workers - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers) 
+- [The main thread is overworked & underpaid (Chrome Dev Summit)](https://www.youtube.com/watch?v=7Rrv9qFMWNM) 
+- [Cache - Web APIs | MDN](https://developer.mozilla.org/en-US/docs/Web/API/Cache) 
   - [Cache.add(request)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/add) 
   - [Cache.put(request, response)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/put) 
   - [Cache.match(request, options)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/match) 
@@ -493,6 +496,9 @@ service worker
   - [Cache.matchAll(request, options)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/matchAll) 
   - [Cache.keys(request, options)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/keys) 
   - [Cache.delete(request, options)](https://developer.mozilla.org/en-US/docs/Web/API/Cache/delete)
+- [Introducing Background Fetch | Blog | Chrome for Developers](https://developer.chrome.com/blog/background-fetch)
+- [Background Synchronization API](https://developer.mozilla.org/en-US/docs/Web/API/Background_Synchronization_API)
+- [How to periodically synchronize data in the background | Web apps patterns](https://web.dev/patterns/web-apps/periodic-background-sync#js)
 
 web auth
 
@@ -604,4 +610,4 @@ screen wake API
   - [WakeLockSentinel.release()](https://developer.mozilla.org/en-US/docs/Web/API/WakeLockSentinel/release) 
   - [navigator.wakeLock.request()](https://developer.mozilla.org/en-US/docs/Web/API/WakeLock/request)
 
-Total all: 1783m
+Total all: 1896m

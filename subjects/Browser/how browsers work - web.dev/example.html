@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>parse</title>
+    <style>
+      body {
+        color: yellow;
+      }
+      .wrapper {
+        color: yellow;
+      }
+    </style>
+    <!-- As html parser is sync on webkit -->
+    <!-- If set defer or async here the parser will not wait js to finish before continue parsing the rest of html -->
+    <script src="external.js"></script>
+    <style>
+      .wrapper {
+        background-color: grey;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <p>
+        A text here
+      </p>
+      <button id="reset">reset and reload</button>
+    </div>
+  </body>
+</html>

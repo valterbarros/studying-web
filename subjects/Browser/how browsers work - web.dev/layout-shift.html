@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    Move the slider to add elements and cause layout shift:
+    <br>
+    <button id="shift">layout shift</button>
+    <p id="contentshift"></p>
+
+    Move the slider to change the font size and cause layout and layout shift  and paint:
+    <br>
+    <input type="range" name="" id="ran">
+    <div id="content"></div>
+
+    <script>
+      for (let index = 0; index < 500; index++) {
+        content.insertAdjacentText('afterbegin', 'insert text')
+      }
+
+      const displays = [
+        'block',
+        'inline',
+        'inline-block',
+        'flex',
+        'grid',
+        'table',
+        'table-row',
+        'table-cell',
+        'table-caption',
+        'table-column',
+        'table-column-group',
+        'table-footer-group',
+        'flow-root',
+        'inline-flex',
+        'inline-grid',
+        'inline-table',
+        'list-item',
+        'run-in',
+        'ruby',
+        'ruby-base',
+        'ruby-base-container',
+        'ruby-text',
+        'ruby-text-container',
+        'subgrid',
+        'contents',
+        'none',
+        'inherit',
+        'initial',
+        'unset',
+      ]
+
+      document.querySelector('#ran').addEventListener('input', (e) => {
+        // content.style.display = displays[Math.floor(Math.random() * displays.length)];
+        const font = document.body.style.fontSize || 16
+        const newFont = parseInt(font) + 1
+        
+        document.body.style.fontSize = `${newFont}px`
+      });
+
+      shift.addEventListener('click', () => {
+        performance.mark('start');
+
+        for (let index = 0; index < 10000; index++) {
+          setTimeout(() => {
+            contentshift.insertAdjacentText('afterbegin', 'insert text')
+          }, 1000);
+        }
+          
+        performance.mark('end');
+
+        setTimeout(() => {
+          performance.measure('measure', 'start', 'end');
+        })
+      });
+    </script>
+  </body>
+</html>
