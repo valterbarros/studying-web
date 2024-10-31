@@ -8,8 +8,6 @@ self.addEventListener('fetch', (event) => {
     // Offline first:
     const cachedResponse = await caches.match(event.request);
 
-    console.log('cached', cachedResponse);
-    
     return cachedResponse;
   }());
 });
@@ -26,6 +24,10 @@ self.addEventListener('backgroundfetchsuccess', (event) => {
     });
     
     await Promise.all(promises);
+
+    const cts = await clients.matchAll()
+    const focused = cts.find((client) => client.focused)
+    focused?.navigate(focused.url)
 
     event.updateUI({ title: 'Episode 5 ready to listen!' });
   }());

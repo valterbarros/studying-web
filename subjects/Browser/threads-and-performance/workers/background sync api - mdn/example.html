@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+      await navigator.serviceWorker.register('./sw.js');
+    </script>
+  </head>
+  <body>
+    background sync
+
+    <button id="start"> Start </button>
+
+    <br>
+
+    <script type="module">
+      const permission = await navigator.permissions.query({ name: 'background-sync' });
+      console.log(permission);
+
+
+      start.onclick = async () => {
+        const reg = await navigator.serviceWorker.ready;
+  
+        await reg.sync.register('my-sync');
+
+        console.log('tags', await reg.sync.getTags());
+      }
+    </script>
+  </body>
+</html>

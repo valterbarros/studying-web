@@ -39,8 +39,26 @@ function getHtmlFiles(dir, baseUrl) {
   return htmlFiles;
 }
 
+
+// Middleware function for /subjects/Browser
+function browserMiddleware(req, res, next) {
+  console.log('Middleware for /subjects/Browser', req.url);
+  if (req.url.includes('delayed.mp4')) {
+    setTimeout(() => {
+      next()
+    }, 5000);
+  } else {
+    next();
+  }
+}
+
+// Use the middleware for /subjects/Browser route
+app.use('/subjects/Browser', browserMiddleware);
+
 // Serve the index.html file
 app.get('/', (req, res) => {
+  console.log('req', req);
+  
   const browserDir = path.join(__dirname, '..', 'subjects', 'Browser');
   
   // Get all .html files recursively from the Browser directory

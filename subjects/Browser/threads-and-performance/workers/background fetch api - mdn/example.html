@@ -13,7 +13,7 @@
 
     <button id="start">Start Download</button>
     <button id="abort">Abort all</button>
-    <button id="load"> Load video</button>
+    <!-- <button id="load"> Load video</button> -->
 
     <br>
 
@@ -25,6 +25,7 @@
 
     <script type="module">
       const permission = await navigator.permissions.query({ name: 'background-fetch' });
+      const FILE_URL = './delayed.mp4';
       // console.log(permission);
       
       const monitorBgFetch = (fetch) => {
@@ -53,10 +54,10 @@
   
         const bgFetch = await reg.backgroundFetch.fetch(
           `video23-${Date.now()}`,
-          ['./videoplayback.mp4'],
+          [FILE_URL],
           {
             title: 'an example',
-            downloadTotal: 1607451795
+            // downloadTotal: 5524488
           }
         );
   
@@ -83,10 +84,8 @@
 
       abort.onclick();
 
-      load.onclick = () => {
-        const video = document.querySelector('video');
-        video.src = './videoplayback.mp4';
-      }
+      const video = document.querySelector('video');
+      video.src = FILE_URL;
     </script>
   </body>
 </html>

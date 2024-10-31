@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="module">
+      await navigator.serviceWorker.register('./sw.js');
+    </script>
+  </head>
+  <body>
+    background periodic sync
+
+    <button id="start"> Start </button>
+
+    <br>
+
+    <script type="module">
+      // appearelly this only works on pwa mode
+      // https://stackoverflow.com/questions/66865630/dom-exception-permission-denied-periodic-bckground-sync
+      const permission = await navigator.permissions.query({
+        name: 'periodic-background-sync',
+      });
+      console.log(permission);
+
+
+      start.onclick = async () => {
+        const reg = await navigator.serviceWorker.ready;
+  
+        await reg.periodicSync.register('content-sync', { minInterval: 1000 });
+
+        console.log('tags', await reg.sync.getTags());
+      }
+    </script>
+  </body>
+</html>
