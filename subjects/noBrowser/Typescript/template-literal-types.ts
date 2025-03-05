@@ -8,14 +8,12 @@ type In2 = Inferece<'valterchange'>;
 
 export const in2:In2 = { name: 'valterchangechange' };
 
-export type Person2 = {
+export type Person = {
   name: string;
   age: number
 }
 
-type Extr<T extends string & keyof Person2> = T;
-
-export function getName<T extends string & keyof Person2>(name: `${T}Changed`) {
+export function getName<T extends string & keyof Person>(name: `${T}Changed`) {
   return name;
 }
 

@@ -1,7 +1,8 @@
-import { in2, getName } from './template-literal-types';
+import { in2, getName, type Person } from './template-literal-types';
 
 describe('template-literal-types',() => {
-  it('should infer template literal on fn',() => {
+  it('should infer template literal on fn', () => {
+    type KeyOfPerson = keyof Person;
     expectTypeOf(getName('ageChanged')).toEqualTypeOf<'ageChanged'>()    
   }); 
 

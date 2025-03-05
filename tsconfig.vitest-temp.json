@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "allowJs": true,
+    "module": "esnext",
+    "lib": [
+      "ES2023",
+      "DOM"
+    ],
+    "types": [
+      "vitest/globals",
+      "vitest/jsdom",
+      "@vitest/browser/matchers",
+      "@vitest/browser/providers/playwright"
+    ],
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
+    "useDefineForClassFields": true,
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
+    "emitDeclarationOnly": false,
+    "incremental": true,
+    "tsBuildInfoFile": "/home/valter/projects/js/studing-web/node_modules/vitest/dist/chunks/tsconfig.tmp.tsbuildinfo"
+  },
+  "typeAcquisition": {
+    "include": [
+      "vitest"
+    ]
+  },
+  "types": [
+    "node"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

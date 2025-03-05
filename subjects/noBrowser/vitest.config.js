@@ -9,5 +9,12 @@ export default defineConfig({
     name: 'noBrowser',
     allowOnly: true,
     passWithNoTests: false,
+    typecheck: {
+      ignoreSourceErrors: true,
+      enabled: true,
+      // include: [
+      //   '*.test-d.ts'
+      // ]
+    }
   },
 });
