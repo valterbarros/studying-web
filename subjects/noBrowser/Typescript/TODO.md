@@ -1,0 +1,1 @@
+Talvez remover todos os arquivos .ts dessa pasta, e mover todos os typos para dentro do arquivo de teste dividindo por descrive entre topico e subtopicos

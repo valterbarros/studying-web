@@ -10,7 +10,7 @@ type OptionsFlags<Type> = {
 };
 
 // Convert all to boolean
-type Opt = OptionsFlags<Features>;
+export type Opt = OptionsFlags<Features>;
 
 // Sub topic: Mapping Modifiers
 
@@ -34,7 +34,6 @@ type MaybeUser = {
   id: string;
   name?: string;
 }
-
 
 type User = Concrete<MaybeUser>;
 

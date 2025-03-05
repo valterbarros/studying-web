@@ -1,5 +1,10 @@
 // Topic: Template Literal Types
 
+type NorthCity = 'AL' | 'PE';
+type SouthCity = 'SP' | 'RJ';
+
+type Merge = `${NorthCity | SouthCity}_city`;
+
 type Inferece<T extends string> = {
   name: `${T}change`
 }
