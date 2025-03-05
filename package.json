@@ -1,5 +1,6 @@
 {
   "name": "study-js-2023",
+  "packageManager": "npm@10.2.0",
   "version": "1.0.0",
   "type": "module",
   "description": "\"Map and Set\" \"The old \"var\"\" \"Reference Type\" \"Symbol type, Symbol - JavaScript | MDN\" \"Symbol.replace - JavaScript | MDN\" \"Symbol.species - JavaScript\" \"MDN, Symbol.toPrimitive\" \"JavaScript | MDN, Symbol.unscopables\" \"JavaScript | MDN, Symbol() constructor - JavaScript | MDN\" \"Symbol.for() - JavaScript | MDN\" \"Symbol.keyFor() - JavaScript | MDN\" \"Object - JavaScript | MDN\" \"Object.prototype.valueOf() - JavaScript | MDN\" \"Object.prototype.toString() - JavaScript | MDN\" \"Symbol.toPrimitive - JavaScript | MDN\" \"Object.prototype.hasOwnProperty() - JavaScript | MDN\" \"Object.setPrototypeOf() - JavaScript | MDN\" \"Object.prototype.constructor - JavaScript | MDN\" \"Object.seal() - JavaScript | MDN\" \"Object.keys() - JavaScript | MDN\" \"Object.isSealed() - JavaScript | MDN\" \"Object.isFrozen() - JavaScript | MDN\" \"Object.is() - JavaScript | MDN\" \"Object.hasOwn() - JavaScript | MDN\" \"Object.groupBy() - JavaScript | MDN\" \"Object.getPrototypeOf() - JavaScript | MDN\" \"Object.getOwnPropertySymbols() - JavaScript | MDN\" \"Object.getOwnPropertyNames() - JavaScript | MDN\" \"Object.getOwnPropertyDescriptors() - JavaScript | MDN\" \"Object.fromEntries() - JavaScript | MDN\" \"Enumerability and ownership of properties - JavaScript | MDN\" \"Object.preventExtensions() - JavaScript | MDN\" \"Object.entries() - JavaScript | MDN\" \"Object.defineProperty() - JavaScript | MDN\" \"Object.defineProperties() - JavaScript | MDN\" \"Spread syntax (...) - JavaScript | MDN\" \"Shallow copy - MDN Web Docs Glossary: Definitions of Web-related terms | MDN\" \"Deep copy - MDN Web Docs Glossary: Definitions of Web-related terms | MDN\" \"Prototypes, inheritance, Inheritance and the prototype chain - JavaScript | MDN\" \"Object.prototype.isPrototypeOf() - JavaScript | MDN, instanceof - JavaScript | MDN\" \"Generators, Iteration protocols - JavaScript | MDN\" \"Iterables\" \"Async iteration and generators\"",
@@ -36,6 +37,7 @@
     "array-from-async": "^3.0.0",
     "blob-polyfill": "^7.0.20220408",
     "core-js": "^3.36.1",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "tsc": "^2.0.4"
   }
 }

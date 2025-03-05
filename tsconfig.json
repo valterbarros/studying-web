@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
+    "allowJs": true,
     "module": "ESNext",
     "lib": [
       "ES2023",
@@ -8,6 +9,7 @@
     ],
     "types": [
       "vitest/globals",
+      "vitest/jsdom",
       "@vitest/browser/matchers",
       "@vitest/browser/providers/playwright"
     ],
