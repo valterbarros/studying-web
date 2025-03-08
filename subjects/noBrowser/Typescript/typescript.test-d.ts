@@ -1,5 +1,4 @@
 import {Conditional, Functions, MoreOnFn, Narrowing, Obj} from "./types";
-import {expectTypeOf} from "vitest";
 
 describe('Topic: Narrowing', () => {
   it('should correctly narrow types using if statements to distinguish between arrays and strings', () => {
