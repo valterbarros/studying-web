@@ -2,7 +2,7 @@ import {Conditional, Functions, MoreOnFn, Narrowing, Obj} from "./types";
 import {expectTypeOf} from "vitest";
 
 describe('Topic: Narrowing', () => {
-  it('should be possible to narrow types with ifs', () => {
+  it('should correctly narrow types using if statements to distinguish between arrays and strings', () => {
     function whatIs(ob: Narrowing.Type) {
       if (Array.isArray(ob)) {
         return ob.join(',') // Array
@@ -15,15 +15,14 @@ describe('Topic: Narrowing', () => {
   });
 
   describe('Sub topic: Using type predicates', () => {
-    it('should be possible to create a type predicate and narrow types', () => {
+    it('should create a type predicate to narrow types between Fish and Bird', () => {
       function getSmallPet(): Narrowing.Fish | Narrowing.Bird {
         return { fly: () => {} } as unknown as Narrowing.Fish;
       }
   
       const pt = getSmallPet();
   
-      // if true pet is Fish otherwise no
-      function isFish(pet: Narrowing.Fish | Narrowing.Bird): pet is Narrowing.Fish{
+      function isFish(pet: Narrowing.Fish | Narrowing.Bird): pet is Narrowing.Fish {
         return (pet as Narrowing.Fish).swim !== undefined;
       }
   
@@ -33,10 +32,9 @@ describe('Topic: Narrowing', () => {
   });
 
   describe('Sub topic: Discriminated unions', () => {
-    it('should be possible to descriminated unions based on kind property', () => {
+    it('should discriminate unions based on the kind property to determine the shape type', () => {
       let shape = {} as Narrowing.Shape;
 
-      // A way to split union
       if (shape.kind === 'circle') expectTypeOf(shape.radius).toBeNumber();
       if (shape.kind === 'triangle') expectTypeOf(shape.sideLength).toBeNumber();
       if (shape.kind === 'square') expectTypeOf(shape.sideLength).toBeNumber();
@@ -45,7 +43,7 @@ describe('Topic: Narrowing', () => {
 
   describe('Sub topic: Exhaustiveness checking', () => {
     // TODO: find a way to test that
-    it.skip('should alert when not all possibilities have been tested', () => {
+    it.skip('should alert when not all possibilities have been tested in a switch statement', () => {
       function getAreaFull(shape: Narrowing.Shape) {
         switch (shape.kind) {
           case "circle":
@@ -66,15 +64,15 @@ describe('Topic: Narrowing', () => {
 
 describe('Topic: More on Functions', () => {
   describe('Sub topic: Function Type Expressions', () => {
-    it('should be possible declare a function', () => {
+    it('should declare a function type expression', () => {
       let a: () => void;
 
       expectTypeOf(a).toEqualTypeOf<() => void>();
     });
   });
 
-  describe('Sub topic: Call signature', () => {
-    it('should be possible to add properties to function', () => {
+  describe('Sub topic: Call signatures', () => {
+    it('should add properties to a function type', () => {
       let a: MoreOnFn.Describe;
 
       expectTypeOf(a.description).toBeString();
@@ -83,7 +81,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Construct signatures', () => {
-    it('should be possible to declare a constructable', () => {
+    it('should declare a constructable type', () => {
       let a = {} as MoreOnFn.SomeConst;
 
       expectTypeOf(new a('1')).toBeString();
@@ -92,7 +90,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Generic functions', () => {
-    it('should be possible to create generic functions', () => {
+    it('should create generic functions that return the first element of an array', () => {
       function firstElement<Type>(arr: Array<Type>): Type | undefined {
         return arr[0];
       }
@@ -102,7 +100,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Inference', () => {
-    it('should be possible to infer generic types based on parameters', () => {
+    it('should infer generic types based on function parameters', () => {
       function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
         return arr.map(func);
       }
@@ -114,7 +112,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Constraints', () => {
-    it('should be possible to add constraint on generics', () => {
+    it('should add constraints on generics to ensure they have a length property', () => {
       function longest<Type extends { length: number }>(a: Type, b: Type) {
         if (a.length >= b.length) {
           return a;
@@ -127,8 +125,8 @@ describe('Topic: More on Functions', () => {
     });
   });
 
-  describe('Sub topic: Function overload', () => {
-    it('should be possible to function overload', () => {
+  describe('Sub topic: Function overloads', () => {
+    it('should overload functions to handle different parameter types', () => {
       function makeDate(timestamp: number): Date;
       function makeDate(m: number, d: number, y: number): Date;
       function makeDate(mOrTimestamp: number, d?: number, y?: number): Date {
@@ -145,7 +143,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Declaring this in a Function', () => {
-    it('should be possible to declare this', () => {
+    it('should declare this in a function to ensure correct context', () => {
       const db = {} as Functions.DB;
 
       db['filter'] = Array.prototype['filter'];
@@ -157,7 +155,7 @@ describe('Topic: More on Functions', () => {
   });
 
   describe('Sub topic: Rest Parameters and Arguments', () => {
-    it('should be possible to get rest parameters', () => {
+    it('should get rest parameters in a function', () => {
       function getFirstReturnRest(first: number, ...rest: number[]) {
         return [first, ...rest];
       }
@@ -165,15 +163,15 @@ describe('Topic: More on Functions', () => {
       expectTypeOf(getFirstReturnRest(1,2,3)).toBeArray();
     });
 
-    it('should be possible to pass rest arguments', () => {
-      const args = [1,2] as const // as const assumes that is imutable;
+    it('should pass rest arguments to a function', () => {
+      const args = [1,2] as const;
 
       expectTypeOf(Math.atan2(...args)).toBeNumber();
     });
   });
 
-  describe('Sub topic: parameter destructuring', () => {
-    it('should be possible to destructuring parameters', () => {
+  describe('Sub topic: Parameter destructuring', () => {
+    it('should destructure parameters in a function', () => {
       function named<Type>({a,b,c}: {a: Type, b: Type, c: Type}) {}
 
       expectTypeOf(named({a: '1', b: '1', c: '1'})).toBeVoid();
@@ -183,44 +181,43 @@ describe('Topic: More on Functions', () => {
 
 describe('Topic: Object types', () => {
   describe('Sub topic: Index Signatures', () => {
-    it('should be possible to have index signature', () => {
+    it('should have index signatures to allow dynamic property access', () => {
       let a: Obj.IndexSign;
 
       expectTypeOf(a['prop']).toBeString();
     });    
   });
 
-  describe('Sub topic: intersection vs extension', () => {
+  describe('Sub topic: Intersection vs Extension', () => {
     it.skip('should demonstrate that intersection behavior is different from extension', () => {
       type Conflict = { a: string } & {a: number };
       
       const conflict: Conflict = { a: 1 };
       
-      // a is never
       expectTypeOf(conflict.a).toEqualTypeOf<never>();
     });
   });
 
   describe('Sub topic: Extending Types', () => {
-    it('should be possible to extend a type', () => {
+    it('should extend a type to add new properties', () => {
       expectTypeOf({} as Obj.AddressWithUnit).toExtend<{ unit: string }>();
     });
   });
 
   describe('Sub topic: Intersection Types', () => {
-    it('should be possible to intersect types', () => {
+    it('should intersect types to combine properties', () => {
       expectTypeOf({} as Obj.ColorfulCircle).toExtend<{radius: number; color: string}>();
     });
   });
 
   describe('Sub topic: Generic Object Types', () => {
-    it('should be possible to create generic object type', () => {
+    it('should create generic object types to handle various data structures', () => {
       expectTypeOf({} as Obj.Box<{ name: 'apple' }>).toEqualTypeOf<{contents: {name: 'apple'};}>();
     });
   });
 
   describe('Sub topic: The ReadonlyArray Type', () => {
-    it('should not have push on readonly array', () => {
+    it('should ensure readonly arrays do not have mutating methods like push', () => {
       let nb: readonly number[];
       
       expectTypeOf(nb).not.toHaveProperty('push');
@@ -228,15 +225,15 @@ describe('Topic: Object types', () => {
   });
   
   describe('Sub topic: Tuples', () => {
-    it('should be possible to create tuples', () => {
+    it('should create tuples to handle fixed-length arrays with specific types', () => {
       expectTypeOf([] as unknown as [number, number]).toEqualTypeOf<[number, number]>();
     });
   });
 });
 
 describe('Topic: Generics', () => {
-  describe('Sub topic: parameters in generic constraint', () => {
-    it('should be possible to create generic object types', () => {
+  describe('Sub topic: Parameters in generic constraints', () => {
+    it('should create generic object types with constrained parameters', () => {
       function getProperty<Type, Key extends keyof Type>(o: Type, key: Key) {
         return key;
       }
@@ -248,7 +245,7 @@ describe('Topic: Generics', () => {
   });
 
   describe('Sub topic: Generic parameters default', () => {
-    it('should be possible to create generic with default parameters', () => {
+    it('should create generics with default parameters', () => {
       class Rat {
         property: string;
       }
@@ -266,7 +263,7 @@ describe('Topic: Generics', () => {
 });
 
 describe('Off topic', () => {
-  it('should be possible to add types to object methods', () => {
+  it('should add types to object methods to ensure type safety', () => {
     type Base = {
       name: string;
       age: number;
@@ -291,9 +288,9 @@ describe('Off topic', () => {
   });
 });
 
-describe('Topic: indexed access type', () => {
-  describe('Sub topic: number access index', () => {
-    it('should be possible to use access index', () => {
+describe('Topic: Indexed access types', () => {
+  describe('Sub topic: Number access index', () => {
+    it('should use indexed access types to access array elements', () => {
       const obj = {
         clients: [
           { name: 'valter' }
@@ -308,8 +305,8 @@ describe('Topic: indexed access type', () => {
 });
 
 describe('Topic: Conditional types', () => {
-  describe('Sub topic: add conditional types', () => {
-    it('should be possible to use conditional types', () => {
+  describe('Sub topic: Add conditional types', () => {
+    it('should use conditional types to create type-safe functions', () => {
       function generic<T>(obj: T): MessageOf<T> {
         return obj['message'];
       }
@@ -319,20 +316,20 @@ describe('Topic: Conditional types', () => {
       expectTypeOf({} as Conditional.EmailContent).toEqualTypeOf<string>();
     });
     
-    it('should be possible to flat array type', () => {
+    it('should flatten array types using conditional types', () => {
       expectTypeOf({} as Conditional.Flatten<string[]>).toEqualTypeOf<string>();
     });
   });
   
-  describe('Sub topic: Inferring Within Conditional Types', () => {
-    it('should be possible to infer in conditional types', () => {
+  describe('Sub topic: Inferring within conditional types', () => {
+    it('should infer types within conditional types', () => {
       // TODO: 
     });
   });
 });
 
 describe('Topic: Mapped Types', () => {
-  it('should be possible to map a var and turn into boolean args',() => {
+  it('should map a type and turn its properties into boolean values',() => {
     type Features = {
       darkMode: () => void;
       other: string;
@@ -351,7 +348,7 @@ describe('Topic: Mapped Types', () => {
   });
 
   describe('Sub topic: Mapping Modifiers', () => {
-    it('should be possible to remove readonly from properties', () => {
+    it('should remove readonly from properties using mapped types', () => {
       type CreateMutable<Type> = {
         -readonly [Property in keyof Type]: Type[Property];
       }
@@ -371,7 +368,7 @@ describe('Topic: Mapped Types', () => {
       }>();
     });
   
-    it('should be possible to remove optional from types', () => {
+    it('should remove optional from types using mapped types', () => {
       type Concrete<Type> = {
         [Property in keyof Type]-?: Type[Property]
       }
@@ -390,8 +387,8 @@ describe('Topic: Mapped Types', () => {
     });
   });
 
-  describe('Sub topic: Key Remapping via as ', () => {
-    it('should be possible to map and create new types from other', () => {
+  describe('Sub topic: Key Remapping via as', () => {
+    it('should map and create new types from existing types using key remapping', () => {
       type Gettify<Type> = {
         [Property in keyof Type as `get${Capitalize<string & Property>}`]: () => Type[Property]
       }
@@ -410,9 +407,9 @@ describe('Topic: Mapped Types', () => {
       }>();
     });
 
-    it('should be possible to use exclude to ignore key', () => {
+    it('should use exclude to ignore specific keys in a type', () => {
       type RemoveKey<Type, Key extends keyof Type> = {
-        [Propery in keyof Type as Exclude<Propery, Key>]: Type[Propery]
+        [Property in keyof Type as Exclude<Property, Key>]: Type[Property]
       }
       
       type Removed = RemoveKey<{a?: string, b?: string}, 'a'>;
@@ -420,7 +417,7 @@ describe('Topic: Mapped Types', () => {
       expectTypeOf({} as Removed).toEqualTypeOf<{b?: string}>();
     });
 
-    it('should be possible to map over unions', () => {
+    it('should map over unions to create new types', () => {
       type EventConfig<Events extends { kind: string }> = {
         [E in Events as E['kind']]: (event: E) => void;
       }
@@ -435,8 +432,8 @@ describe('Topic: Mapped Types', () => {
   });
 });
 
-describe('Topic Template Literal Types', () => {
-  it('should be possible to add suffix to all union options', () => {
+describe('Topic: Template Literal Types', () => {
+  it('should add suffix to all union options using template literal types', () => {
     type NorthCity = 'AL' | 'PE';
     type SouthCity = 'SP' | 'RJ';
 
@@ -446,17 +443,17 @@ describe('Topic Template Literal Types', () => {
   });
   
   describe('Sub topic: Inference with Template Literals', () => {
-    it('should infer template literal on var', () => {
-      type Inferece<T extends string> = {
+    it('should infer template literal types on variables', () => {
+      type Inference<T extends string> = {
         name: `${T}change`
       }
       
-      type Infered = Inferece<'valterchange'>;
+      type Inferred = Inference<'valterchange'>;
   
-      expectTypeOf({} as Infered).toEqualTypeOf<{ name: 'valterchangechange' }>();
+      expectTypeOf({} as Inferred).toEqualTypeOf<{ name: 'valterchangechange' }>();
     });
 
-    it('should infer template literal on fn', () => {
+    it('should infer template literal types in functions', () => {
       const obj = {
         name: '',
         age: -1,
